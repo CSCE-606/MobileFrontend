@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up dApp.js to start working on your app!</Text>
+      <Text>boyu is piped </Text>
       <StatusBar style="auto" />
     </View>
   );
