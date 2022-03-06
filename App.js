@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>boyu is piped </Text>
+      <Text>boyu and kai are piped </Text>
       <StatusBar style="auto" />
     </View>
   );
