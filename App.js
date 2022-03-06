@@ -1,5 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
@@ -10,24 +8,8 @@ const HomeScreen = () => (
   </Layout>
 );
 
-
-
-export default function App() {
-  return (
-    <ApplicationProvider {...eva} theme={eva.light}>
+export default () => (
+  <ApplicationProvider {...eva} theme={eva.light}>
     <HomeScreen />
   </ApplicationProvider>
-  );
-}
-
-
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+);
