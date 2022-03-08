@@ -24,7 +24,9 @@
     "react-native-web": "0.17.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "@babel/register": "^7.17.0",
+    "@cucumber/cucumber": "^7.3.2"
   },
   "private": true
 }
