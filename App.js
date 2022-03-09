@@ -1,6 +1,6 @@
 import React from 'react';
-import WelcomeScreen from './app/screens/WelcomeScreen';
+import FriendList from './app/screens/friendlist';
 
 export default function App(){
-  return <WelcomeScreen/>;
+  return <FriendList/>;
 }
