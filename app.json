@@ -1,7 +1,7 @@
 {
   "expo": {
    "name": "Curastone",
-   "icon": "/Users/zhekaidong/MobileFrontend/app/assets/icon.png",
+   "icon": "./assets/icon.png",
    "version": "1.0.0",
    "slug": "Curastone",
    "ios": {
