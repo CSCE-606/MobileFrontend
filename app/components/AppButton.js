@@ -19,21 +19,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         justifyContent: 'center',
         alignItems: 'center',
-<<<<<<< HEAD
         padding:15,
         width:"100%",
         marginVertical:10,
         
-=======
-        margin: 5,
-        height: 30,
-        width: 70,
->>>>>>> 7c29fda91b1d7391a5f13e123adfd64d2eccc688
 
     },
     text :{
         color:"#fff0f5",
-        fontSize:12,
+        fontSize:18,
         textTransform: "uppercase",
         fontWeight:"bold",
     }
