@@ -1,6 +1,13 @@
 import React from 'react';
-import FriendList from './app/screens/friendlist';
+
+import { NavigationContainer } from '@react-navigation/native';
+import AuthNavigator from './app/navigation/AuthNavigator';
+import route from './app/navigation/routes';
 
 export default function App(){
-  return <FriendList/>;
+  return(
+    <NavigationContainer>
+      <AuthNavigator/>
+    </NavigationContainer>
+  )
 }
