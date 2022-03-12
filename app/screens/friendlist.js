@@ -1,73 +1,103 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Button } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, SafeAreaView, Alert } from 'react-native';
 
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
-
+import Screen from '../components/Screen';
 export function FriendList() {
     return(
-        <View style={styles.container}>
+
+        <SafeAreaView style={styles.container}>
             <View style={styles.listContainer} >
                 <View style={styles.listElement}>
                     <ListItem 
-                        title = "Friend4"
+                        title = "Friend1"
                         image = {require("../assets/fox.png")}
                     />
+
+                    <View style={styles.buttonContainer}>
+                        <Button title="Button1" onPress={createThreeButtonAlert}/>
+                    </View>
                 </View>
 
                 <View style={styles.listElement}>
                     <ListItem 
-                        title = "Friend4"
+                        title = "Friend2"
                         image = {require("../assets/fox.png")}
                     />
+                    <View style={styles.buttonContainer}>
+                        <Button title="Button2"  />
+                    </View>
                 </View>
 
                 <View style={styles.listElement}>
                     <ListItem 
-                        title = "Friend4"
+                        title = "Friend3"
                         image = {require("../assets/fox.png")}
                     />
+                    <View style={styles.buttonContainer}>
+                        <Button title="Button3"  />
+                    </View>
                 </View>
                 <View style={styles.listElement}>
                     <ListItem 
                         title = "Friend4"
                         image = {require("../assets/fox.png")}
                     />
+                    <View style={styles.buttonContainer}>
+                        <Button title="Button4"  />
+                    </View>
                 </View>
 
                 <View style={styles.listElement}>
                     <ListItem 
-                        title = "Mosh"
+                        title = "Friend5"
                         image = {require("../assets/fox.png")}
+                        
                     />
+                    <View style={styles.buttonContainer}>
+                        <Button title="Button5"  onPress={createThreeButtonAlert}/>
+                    </View>
                 </View>
 
             </View>
 
             
 
-            <View style={styles.buttonContainer}>
-                <AppButton title="Button1"  />
-                <AppButton title="Button2"  />
-                <AppButton title="Button3"  />
-                <AppButton title="Button4" />
-            </View>
             
-        </View>
-    )
-}
+            
+        </SafeAreaView>
 
+    );
+};
+const createThreeButtonAlert = () =>
+Alert.alert(
+  "I need SpongeBob!",
+  "I need SpongeBob",
+  [
+    {
+      text: "Ask me later",
+      onPress: () => console.log("Ask me later pressed")
+    },
+    {
+      text: "Cancel",
+      onPress: () => console.log("Cancel Pressed"),
+      style: "cancel"
+    },
+    { text: "OK", onPress: () => console.log("OK Pressed") }
+  ]
+);
 const styles = StyleSheet.create({
     buttonContainer: {
-        flexDirection: "row",
         
-        top: 150,
-        flex: 0.05,
+        
+       
         borderRadius: 10,
         shadowColor: "grey",
         shadowOffset: {width: 10, height: 10},
         shadowOpacity: 1,
+       
     },
 
     container: {
@@ -79,6 +109,7 @@ const styles = StyleSheet.create({
 
     listElement: {
         flexDirection: "row",
+        padding:90,
     },
 
     listContainer: {
@@ -86,6 +117,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#f9e955",
         right: 100,
         justifyContent: "space-evenly",
+        padding : 10,
     },
 
     image: {
