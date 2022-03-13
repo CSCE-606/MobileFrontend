@@ -5,7 +5,7 @@ import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
 import Screen from '../components/Screen';
-export function FriendList() {
+export function FriendList({navigation}) {
     return(
 
         <SafeAreaView style={styles.container}>
@@ -17,7 +17,7 @@ export function FriendList() {
                     />
 
                     <View style={styles.buttonContainer}>
-                        <Button title="Button1" onPress={createThreeButtonAlert}/>
+                        <Button title="Button1" onPress={() => {navigation.navigate("Notification")}}/>
                     </View>
                 </View>
 

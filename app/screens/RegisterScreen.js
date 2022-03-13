@@ -39,7 +39,7 @@ function RegisterScreen({navigation}) {
         />
         
     </Screen>
-  );
+  )
 };
 
 const styles = StyleSheet.create({

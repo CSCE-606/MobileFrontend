@@ -1,5 +1,15 @@
 {
   "expo": {
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "../assets/dili.png",
+          "color": "#ffffff",
+          "sounds": ["../assets/SpongeSound.wav"]
+        }
+      ]
+    ],
    "name": "Curastone",
    "icon": "./assets/icon.png",
    "version": "1.0.0",
