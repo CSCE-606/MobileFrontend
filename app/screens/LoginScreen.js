@@ -4,8 +4,10 @@ import { StyleSheet, Text, View ,Image,Alert} from 'react-native';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
+import axios from 'axios';
+
 function LoginScreen({navigation}) {
-    const [email, setEmail]=useState()
+    const [username, setUserName]=useState()
     const [password, setPassword]=useState()
     return (
     <Screen style = {styles.container}>
@@ -13,16 +15,16 @@ function LoginScreen({navigation}) {
         <AppTextInput 
             autoCapitalize = 'none'
             autoCorrect = {false}
-            keyboardType = "email-address"
+            keyboardType = "default"
             icon = "email"
-            placeholder = "Email"
+            placeholder = "Username"
             textContentType = "emailAddress"
-            onChangeText = {text => setEmail(text)}
+            onChangeText = {text => setUserName(text)}
         />
         <AppTextInput 
             autoCapitalize = 'none'
             autoCorrect = {false}
-            keyboardType = "email-address"
+            keyboardType = "default"
             icon = "lock"
             placeholder = "Password"
             textContentType = "password"
@@ -30,9 +32,9 @@ function LoginScreen({navigation}) {
             onChangeText = {text => setPassword(text)}
         />
 
-        <AppButton title =  "Login" onPress={() => {
-
-         
+        <AppButton title =  "Login" onPress={async() => {
+                console.log(`Username is ${username} and password is ${password}`)
+                await axios.post(`http://192.168.192.152:3000/login?username=${username}&password=${password}`)
                 navigation.navigate("Friend")
             }
         }
