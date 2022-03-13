@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import WelcomeScreen from "../screens/WelcomeScreen";
-import FriendList from "../screens/FriendList";
+import FriendList from "../screens/FriendLists";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import Notification from "../api/Notification";
