@@ -40,7 +40,6 @@ export function FriendList({navigation}) {
                         <Button title="Button3"  />
                     </View>
                 </View>
-
                 <View style={styles.listElement}>
                     <ListItem 
                         title = "Friend4"
@@ -72,8 +71,6 @@ export function FriendList({navigation}) {
 
     );
 };
-
-
 const createThreeButtonAlert = () =>
 Alert.alert(
   "I need SpongeBob!",
@@ -139,4 +136,6 @@ const styles = StyleSheet.create({
 
     }
 })
+
+
 export default FriendList;
