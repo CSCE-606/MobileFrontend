@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "190963195631",
+    "project_id": "curastone-74faf",
+    "storage_bucket": "curastone-74faf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190963195631:android:da3985291f26aa5ca1851a",
+        "android_client_info": {
+          "package_name": "curastone.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190963195631-q7sag5agglrugslfg25ieerajlpn88g6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPKkg5oJukOhBnVDKhlQgS9wDepFdvCSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "190963195631-q7sag5agglrugslfg25ieerajlpn88g6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
