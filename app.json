@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.curastone.curastone"   },
+      "bundleIdentifier": "curastone.android.curastone"   },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -27,7 +27,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "googleServicesFile": "./google-services.json",
-      "package": "com.curastone"
+      "package": "curastone.android"
     },
     "plugins": [
       "@react-native-firebase/app",

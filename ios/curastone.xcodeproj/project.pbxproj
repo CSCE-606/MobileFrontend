@@ -326,7 +326,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.curastone.curastone;
+				PRODUCT_BUNDLE_IDENTIFIER = curastone.android.curastone;
 				PRODUCT_NAME = curastone;
 				SWIFT_OBJC_BRIDGING_HEADER = "curastone/curastone-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -352,7 +352,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.curastone.curastone;
+				PRODUCT_BUNDLE_IDENTIFIER = curastone.android.curastone;
 				PRODUCT_NAME = curastone;
 				SWIFT_OBJC_BRIDGING_HEADER = "curastone/curastone-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

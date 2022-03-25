@@ -26,7 +26,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>curastone</string>
-          <string>com.curastone.curastone</string>
+          <string>curastone.android.curastone</string>
         </array>
       </dict>
       <dict>

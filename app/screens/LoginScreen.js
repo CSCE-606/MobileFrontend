@@ -4,9 +4,47 @@ import { StyleSheet, Text, View ,Image,Alert} from 'react-native';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
+import auth from '@react-native-firebase/auth';
+
 function LoginScreen({navigation}) {
-    const [email, setEmail]=useState()
-    const [password, setPassword]=useState()
+    const [email, setEmail]=useState();
+    const [password, setPassword]=useState();
+
+    const [initializing, setInitializing] = useState(true);
+    const [user, setUser] = useState();
+    console.log('email', email);
+    console.log('password',password);
+
+    // function onAuthStateChanged(user) {
+    //     setUser(user);
+    //     if (initializing) setInitializing(false);
+    //   }
+
+    const onClick = async () => {
+
+        console.log('test');
+        console.log(email,password);
+
+        const res = await auth().signInWithEmailAndPassword(email,password);
+        console.log('auth res',res);
+    }
+
+
+    //   useEffect(() => {
+    //     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    //     return subscriber; // unsubscribe on unmount
+    //   }, []);
+    
+    //   if (initializing) return null;
+    
+    //   if (!user) {
+    //     return (
+    //       <View>
+    //         <Text>Login</Text>
+    //       </View>
+    //     );
+    //   }
+
     return (
     <Screen style = {styles.container}>
         <Image style = {styles.logo} source = {require("../assets/Ping_logo.png")}/>
@@ -32,8 +70,8 @@ function LoginScreen({navigation}) {
 
         <AppButton title =  "Login" onPress={() => {
 
-         
-                navigation.navigate("Friend")
+                onClick();
+                // navigation.navigate("Friend")
             }
         }
         />
