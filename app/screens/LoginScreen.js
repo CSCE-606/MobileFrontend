@@ -12,11 +12,12 @@ function LoginScreen({navigation}) {
     
 
     const SignIn =  () => {
+        console.log(email,password);
     signInWithEmailAndPassword(authentication, email, password)
     .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    // ...
+    
+        const user = userCredential.user;
+
     })
     .catch((error) => {
     const errorCode = error.code;
@@ -48,7 +49,8 @@ function LoginScreen({navigation}) {
         />
 
         <AppButton title =  "Login" onPress={
-            SignIn 
+           
+                navigation.navigate("Friend")
         }
         />
         

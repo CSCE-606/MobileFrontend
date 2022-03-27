@@ -11,10 +11,15 @@ import {  createUserWithEmailAndPassword } from "firebase/auth";
 function RegisterScreen({navigation}) {
     const [email, setEmail]=useState();
     const [password, setPassword]=useState();
-    const [modalVisible, setModalVisible] = useState(false);
+    const [popUpVisible, setPopUpVisible] = useState(false);
+    const [popUpText, setPopUpText] = useState();
     const RegisterUser = async(e) => {
         e.preventDefault();
-        console.log(email,password);
+        
+        if(!email || !password){
+            setPopUpText('Please enter a valid password or email');
+        }
+
         let user;
         try{
             const createUserRes = await createUserWithEmailAndPassword(authentication, email, password);
@@ -24,11 +29,10 @@ function RegisterScreen({navigation}) {
             const errorCode = error.code;
             const errorMessage = error.message;
 
-            console.log(errorCode,errorMessage);
+            setPopUpText(errorMessage);
         }
-        
-
-     
+        setPopUpText("Register Successful. Please go back to Login page.");
+        setPopUpVisible(true);
 
     }
     return (
@@ -53,11 +57,9 @@ function RegisterScreen({navigation}) {
             secureTextEntry 
             onChangeText = {text => setPassword(text)}
         />
-        <PopUp modalVisible={modalVisible}  setModalVisible={setModalVisible} />
+        <PopUp popUpVisible={popUpVisible}  setPopUpVisible={setPopUpVisible} popUpText={popUpText} />
         
-        <Button title =  "Register" onPress={
-          () => setModalVisible(true)
-            }/>
+        <Button title =  "Register" onPress={RegisterUser}/>
         
     </Screen>
   )

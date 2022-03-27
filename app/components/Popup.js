@@ -2,7 +2,7 @@ import React from "react";
 import Constants from "expo-constants";
 import { StyleSheet, SafeAreaView, Alert, Modal, Text, Pressable, View} from "react-native";
 
-function PopUp({children,style, modalVisible, setModalVisible}) {
+function PopUp({children,style, popUpVisible, setPopUpVisible,popUpText, loginSuccess}) {
 
     
 
@@ -10,20 +10,20 @@ function PopUp({children,style, modalVisible, setModalVisible}) {
         <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={popUpVisible}
         onRequestClose={() => {
           Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
+          setPopUpVisible(!popUpVisible);
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
+            <Text style={styles.modalText}>{popUpText}</Text>
+          <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => setPopUpVisible(!popUpVisible)}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Text style={styles.textStyle}>Back</Text>
             </Pressable>
           </View>
         </View>
