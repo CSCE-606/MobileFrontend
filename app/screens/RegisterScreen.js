@@ -1,23 +1,35 @@
 import React from 'react';
 import {useState} from 'react';
-import { StyleSheet, Text, View ,Image,Alert} from 'react-native';
+import { StyleSheet,Image,Button} from 'react-native';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
+import PopUp from '../components/Popup';
 import {authentication} from "../../firebase";
 import {  createUserWithEmailAndPassword } from "firebase/auth";
 
 function RegisterScreen({navigation}) {
-    const [email, setEmail]=useState()
-    const [password, setPassword]=useState()
-    const RegisterUser = () => {
-        createUserWithEmailAndPassword(authentication, email, password)
-        .then((re) =>{
-            console.log(re);
-        })
-        .catch((re) =>{
-            console.log(re);
-        })
+    const [email, setEmail]=useState();
+    const [password, setPassword]=useState();
+    const [modalVisible, setModalVisible] = useState(false);
+    const RegisterUser = async(e) => {
+        e.preventDefault();
+        console.log(email,password);
+        let user;
+        try{
+            const createUserRes = await createUserWithEmailAndPassword(authentication, email, password);
+            user = createUserRes.user;
+        }catch(error)
+        { 
+            const errorCode = error.code;
+            const errorMessage = error.message;
+
+            console.log(errorCode,errorMessage);
+        }
+        
+
+     
+
     }
     return (
     <Screen style = {styles.container}>
@@ -41,9 +53,10 @@ function RegisterScreen({navigation}) {
             secureTextEntry 
             onChangeText = {text => setPassword(text)}
         />
-
-        <AppButton title =  "Register" onPress={
-            RegisterUser
+        <PopUp modalVisible={modalVisible}  setModalVisible={setModalVisible} />
+        
+        <Button title =  "Register" onPress={
+          () => setModalVisible(true)
             }/>
         
     </Screen>
@@ -61,7 +74,8 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         marginTop: 10,
         marginBottom:20,
-    }
+    },
+    
 })
 
 
