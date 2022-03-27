@@ -7,61 +7,17 @@ import Screen from '../components/Screen';
 export function FriendList({navigation}) {
     return(
 
-        <SafeAreaView style={styles.container}>
-            <View style={styles.listContainer} >
-                <View style={styles.listElement}>
-                    <ListItem 
-                        title = "Friend1"
-                        image = {require("../assets/fox.png")}
-                    />
+<SafeAreaView style={styles.container}>
+                <View>
+        
+      <Button
+        title="Add Friend"
+        onPress={() => 
+        navigation.navigate("AddFriend")
+        }
+      />
+    </View>
 
-                    <View style={styles.buttonContainer}>
-                        <Button title="Button1" onPress={() => {createThreeButtonAlert}}/>
-                    </View>
-                </View>
-
-                <View style={styles.listElement}>
-                    <ListItem 
-                        title = "Friend2"
-                        image = {require("../assets/fox.png")}
-                    />
-                    <View style={styles.buttonContainer}>
-                        <Button title="Button2"  />
-                    </View>
-                </View>
-
-                <View style={styles.listElement}>
-                    <ListItem 
-                        title = "Friend3"
-                        image = {require("../assets/fox.png")}
-                    />
-                    <View style={styles.buttonContainer}>
-                        <Button title="Button3"  />
-                    </View>
-                </View>
-
-                <View style={styles.listElement}>
-                    <ListItem 
-                        title = "Friend4"
-                        image = {require("../assets/fox.png")}
-                    />
-                    <View style={styles.buttonContainer}>
-                        <Button title="Button4"  />
-                    </View>
-                </View>
-
-                <View style={styles.listElement}>
-                    <ListItem 
-                        title = "Friend5"
-                        image = {require("../assets/fox.png")}
-                        
-                    />
-                    <View style={styles.buttonContainer}>
-                        <Button title="Button5"  onPress={() => {navigation.navigate("Notification")}}/>
-                    </View>
-                </View>
-
-            </View>
 
             
 
@@ -90,52 +46,26 @@ Alert.alert(
     { text: "OK", onPress: () => console.log("OK Pressed") }
   ]
 );
+
 const styles = StyleSheet.create({
-    buttonContainer: {
-        
-        
-       
-        borderRadius: 10,
-        shadowColor: "grey",
-        shadowOffset: {width: 10, height: 10},
-        shadowOpacity: 1,
-       
-    },
-
     container: {
-        flex: 1,
-        backgroundColor: "#f9e955",
-        alignItems: "center",
-        justifyContent: "center",
+      flex: 1,
+      justifyContent: 'center',
+      marginHorizontal: 16,
     },
-
-    listElement: {
-        flexDirection: "row",
-        padding:90,
+    title: {
+      textAlign: 'center',
+      marginVertical: 8,
     },
-
-    listContainer: {
-        flex: 0.5,
-        backgroundColor: "#f9e955",
-        right: 100,
-        justifyContent: "space-evenly",
-        padding : 10,
+    fixToText: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
-
-    image: {
-        width: 70,
-        height: 70,
-        borderRadius: 35,
-
+    separator: {
+      marginVertical: 8,
+      borderBottomColor: '#737373',
+      borderBottomWidth: StyleSheet.hairlineWidth,
     },
-
-    textElement: {
-       
-    },
-
-    userContainer: {
-        marginVertical: 40,
-
-    }
-})
+  });
+  
 export default FriendList;
