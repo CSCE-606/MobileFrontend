@@ -4,9 +4,21 @@ import { StyleSheet, Text, View ,Image,Alert} from 'react-native';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
+import {authentication} from "../../firebase";
+import {  createUserWithEmailAndPassword } from "firebase/auth";
+
 function RegisterScreen({navigation}) {
     const [email, setEmail]=useState()
     const [password, setPassword]=useState()
+    const RegisterUser = () => {
+        createUserWithEmailAndPassword(authentication, email, password)
+        .then((re) =>{
+            console.log(re);
+        })
+        .catch((re) =>{
+            console.log(re);
+        })
+    }
     return (
     <Screen style = {styles.container}>
         <Image style = {styles.logo} source = {require("../assets/Ping_logo.png")}/>
@@ -30,13 +42,9 @@ function RegisterScreen({navigation}) {
             onChangeText = {text => setPassword(text)}
         />
 
-        <AppButton title =  "Register" onPress={() => {
-
-         
-                navigation.navigate("Friend")
-            }
-        }
-        />
+        <AppButton title =  "Register" onPress={
+            RegisterUser
+            }/>
         
     </Screen>
   )
@@ -55,5 +63,6 @@ const styles = StyleSheet.create({
         marginBottom:20,
     }
 })
+
 
 export default RegisterScreen;
