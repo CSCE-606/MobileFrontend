@@ -1,6 +1,7 @@
 import React from 'react';
-import { Image, ImageBackground,StyleSheet,Text,View ,button} from 'react-native';
+import { Image, ImageBackground,StyleSheet,Text,View } from 'react-native';
 import AppButton from '../components/AppButton';
+
 function WelcomeScreen({navigation}) {
 
     return(

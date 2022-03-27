@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Button, SafeAreaView, Alert } from 'react-native';
-
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
@@ -17,7 +16,7 @@ export function FriendList({navigation}) {
                     />
 
                     <View style={styles.buttonContainer}>
-                        <Button title="Button1" onPress={() => {navigation.navigate("Notification")}}/>
+                        <Button title="Button1" onPress={() => {createThreeButtonAlert}}/>
                     </View>
                 </View>
 
@@ -58,7 +57,7 @@ export function FriendList({navigation}) {
                         
                     />
                     <View style={styles.buttonContainer}>
-                        <Button title="Button5"  onPress={createThreeButtonAlert}/>
+                        <Button title="Button5"  onPress={() => {navigation.navigate("Notification")}}/>
                     </View>
                 </View>
 
