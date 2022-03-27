@@ -7,22 +7,22 @@ import AppButton from '../components/AppButton';
 import {authentication} from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 function LoginScreen({navigation}) {
-    const [email, setEmail]=useState()
-    const [password, setPassword]=useState()
-    
+    const [email, setEmail]=useState();
+    const [password, setPassword]=useState();
+    const [user, setUser] = useState();
 
-    const SignIn =  () => {
-        console.log(email,password);
-    signInWithEmailAndPassword(authentication, email, password)
-    .then((userCredential) => {
-    
-        const user = userCredential.user;
-
-    })
-    .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-  });
+    const SignIn =  async() => {
+    let user;
+    try{
+        user = await signInWithEmailAndPassword(authentication, email, password)
+    }catch(error) 
+    {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode,errorMessage);
+     };
+     console.log(user);
+  setUser(user);
 }
 
     return (
@@ -49,8 +49,9 @@ function LoginScreen({navigation}) {
         />
 
         <AppButton title =  "Login" onPress={
-           
-                navigation.navigate("Friend")
+                () => {SignIn();
+                navigation.navigate("Friend");
+            }
         }
         />
         
