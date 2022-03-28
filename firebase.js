@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 
-import admin from "firebase-admin";
+// import admin from "firebase-admin";
 
 import {serviceAccount} from "./curastone-74faf-firebase-adminsdk-816zm-ba0119a794.json";
 
@@ -24,11 +24,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 
-const app = initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  firebaseConfig: firebaseConfig,
-  databaseURL: 'https://curastone-74faf-default-rtdb.firebaseio.com/'
+const app = initializeApp(
+  // credential: admin.credential.cert(serviceAccount),
+  firebaseConfig
+  // databaseURL: 'https://curastone-74faf-default-rtdb.firebaseio.com/'
   
-});
+);
 const analytics = getAnalytics(app);
 export const authentication = getAuth(app);
