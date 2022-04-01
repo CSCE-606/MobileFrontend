@@ -17,12 +17,7 @@ export function FriendList({navigation}) {
         }
       />
     </View>
-
-
-            
-
-            
-            
+       
         </SafeAreaView>
 
     );
@@ -67,5 +62,29 @@ const styles = StyleSheet.create({
       borderBottomWidth: StyleSheet.hairlineWidth,
     },
   });
-  
+
+
+const Listing = [
+  {
+    id: "Amy",
+    Email: "aaa111@gmail.com",
+    PhoneNumber: 8888888888,
+  },
+  {
+    id: "Allen",
+    Email: "ccc333@gmail.com",
+    PhoneNumber: 6666666666,
+  },
+  {
+    id: "Alex",
+    Email: "bbb222@gmail.com",
+    PhoneNumbe: 7777777777,
+  },
+  {
+    id: "Andy",
+    Email: "ddd444@gmail.com",
+    PhoneNumbe: 5555555555,
+  }
+]
+
 export default FriendList;

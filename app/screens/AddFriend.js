@@ -7,25 +7,25 @@ import Screen from '../components/Screen';
 import {authentication} from "../../firebase";
 function AddFriend({navigation}) {
     const [username, setUserName]= useState();
-    const listAllUsers = (nextPageToken) => {
-        console.log("listAllUsers")
-        // List batch of
-        authentication
-          .listUsers(1000, nextPageToken)
-          .then((listUsersResult) => {
-            listUsersResult.users.forEach((userRecord) => {
-              console.log('user', userRecord.toJSON());
-            });
-            if (listUsersResult.pageToken) {
-              // List next batch of users.
-              listAllUsers(listUsersResult.pageToken);
-            }
-          })
-          .catch((error) => {
-            console.log('Error listing users:', error);
-          });
-      };
-      // Start listing users from the beginning, 1000 at a time.
+    // const listAllUsers = (nextPageToken) => {
+    //     console.log("listAllUsers")
+    //     // List batch of
+    //     authentication
+    //       .listUsers(1000, nextPageToken)
+    //       .then((listUsersResult) => {
+    //         listUsersResult.users.forEach((userRecord) => {
+    //           console.log('user', userRecord.toJSON());
+    //         });
+    //         if (listUsersResult.pageToken) {
+    //           // List next batch of users.
+    //           listAllUsers(listUsersResult.pageToken);
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         console.log('Error listing users:', error);
+    //       });
+    //   };
+    //   // Start listing users from the beginning, 1000 at a time.
      
       
     return(
