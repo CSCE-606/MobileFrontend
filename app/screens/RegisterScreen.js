@@ -1,11 +1,13 @@
 import React from 'react';
 import {useState} from 'react';
-import { StyleSheet,Image,Button} from 'react-native';
+import { StyleSheet,Image,Button, Alert} from 'react-native';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
 import PopUp from '../components/Popup';
-import {authentication} from "../../firebase";
+import {authentication, db} from "../../firebase";
+
+import { collection, addDoc } from "firebase/firestore"; 
 import {  createUserWithEmailAndPassword } from "firebase/auth";
 
 function RegisterScreen({navigation}) {
@@ -13,6 +15,7 @@ function RegisterScreen({navigation}) {
     const [password, setPassword]=useState();
     const [popUpVisible, setPopUpVisible] = useState(false);
     const [popUpText, setPopUpText] = useState();
+    // const [useracc,setUser] = useState();
     const RegisterUser = async(e) => {
         e.preventDefault();
         
@@ -22,18 +25,42 @@ function RegisterScreen({navigation}) {
 
         let user;
         try{
-            const createUserRes = await createUserWithEmailAndPassword(authentication, email, password);
-            user = createUserRes.user;
+          createUserRes = await createUserWithEmailAndPassword(authentication, email, password);
+    
+            if (createUserRes.user)
+            {  
+            user= createUserRes.user;
+            }
         }catch(error)
         { 
             const errorCode = error.code;
             const errorMessage = error.message;
 
-            setPopUpText(errorMessage);
+           Alert.alert(errorMessage);
         }
-        setPopUpText("Register Successful. Please go back to Login page.");
-        setPopUpVisible(true);
-
+        // setPopUpText("Register Successful. Please go back to Login page.");
+        // setPopUpVisible(true);
+    
+   
+            try {
+                let docRef;
+                console.log('wdwdw',user);
+                
+                if (user){
+                    console.log(user);
+                    console.log(user.email);
+                    console.log('uid', user.uid);
+                    docRef = await addDoc(collection(db, "users"), {
+                    email: user.email,
+                    username: user.email,
+                    uid: user.uid,
+                    friendList: []
+                });
+            }
+                console.log("Document written with ID: ", docRef.id);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
     }
     return (
     <Screen style = {styles.container}>

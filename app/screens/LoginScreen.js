@@ -6,6 +6,9 @@ import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
 import {authentication} from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import {db} from '../../firebase';
+import { collection, addDoc } from "firebase/firestore"; 
+
 function LoginScreen({navigation}) {
     const [email, setEmail]=useState();
     const [password, setPassword]=useState();
@@ -15,13 +18,14 @@ function LoginScreen({navigation}) {
     let user;
     try{
         user = await signInWithEmailAndPassword(authentication, email, password)
-    }catch(error) 
+    }catch(error)   
     {
         const errorCode = error.code;
         const errorMessage = error.message;
+        Alert.alert(errorMessage);
         console.log(errorCode,errorMessage);
      };
-     console.log(user);
+
   setUser(user);
 }
 
@@ -51,7 +55,8 @@ function LoginScreen({navigation}) {
         <AppButton title =  "Login" onPress={
 
                 () => {
-                navigation.navigate("Friend");
+                    // SignIn();
+                    navigation.navigate("Friend");
             }
 
              

@@ -8,8 +8,19 @@ export function FriendList({navigation}) {
     return(
 
 <SafeAreaView style={styles.container}>
-                <View>
-        
+    <View>
+    
+    {/* <View style={styles.listElement}>
+                    <ListItem 
+                        title = "Friend1"
+                        image = {require("../assets/fox.png")}
+                    />
+
+                    <View style={styles.buttonContainer}>
+                        <Button title="Button1" onPress={() => {createThreeButtonAlert}}/>
+                    </View>
+                </View>
+         */}
       <Button
         title="Add Friend"
         onPress={() => 
