@@ -6,7 +6,7 @@ import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
 import PopUp from '../components/Popup';
 import {authentication, db} from "../../firebase";
-
+import * as Notifications from 'expo-notifications';
 import { collection, addDoc } from "firebase/firestore"; 
 import {  createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -24,8 +24,9 @@ function RegisterScreen({navigation}) {
         }
 
         let user;
+
         try{
-          createUserRes = await createUserWithEmailAndPassword(authentication, email, password);
+          const createUserRes = await createUserWithEmailAndPassword(authentication, email, password);
     
             if (createUserRes.user)
             {  
@@ -44,7 +45,12 @@ function RegisterScreen({navigation}) {
    
             try {
                 let docRef;
-                console.log('wdwdw',user);
+                const expoPushToken = await Notifications.getExpoPushTokenAsync({
+                    experienceId: '@username/example',
+                    development: true
+                  });
+
+                  console.log(expoPushToken.data);
                 
                 if (user){
                     console.log(user);
@@ -52,9 +58,10 @@ function RegisterScreen({navigation}) {
                     console.log('uid', user.uid);
                     docRef = await addDoc(collection(db, "users"), {
                     email: user.email,
-                    username: user.email,
+                    name: user.email,
                     uid: user.uid,
-                    friendList: []
+                    friendList: [],
+                    pushToken: [expoPushToken.data]
                 });
             }
                 console.log("Document written with ID: ", docRef.id);

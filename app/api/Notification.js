@@ -28,20 +28,65 @@ export default function App() {
 
   const schedulePushNotification = async() => {
 
-    registerForPushNotificationsAsync().then(token =>  Alert.alert(token));
-  //  Alert.alert(expoPushToken);
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        icon: "dili.png",
-        sound: 'SpongeSound.wav', 
-        title: "You Received a Hard Push",
-        body: 'From SpongeBob',
-        data: { data: 'goes here' },
-      },
-      trigger: { seconds: 1},
+  
+    const expoPushToken = await Notifications.getExpoPushTokenAsync({
+      experienceId: '@username/example',
+      development: true
     });
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
+    // const chunk = Expo.chunkPushNotifications({
+    //   to: "ExponentPushToken[__teLJOMqatQdNw2myYn1r]",
+    //   sound: 'default',
+    //   body: 'This is a test notification',
+    //   data: { withSome: 'data' },
+    // });
+    try{
+      fetch("https://exp.host/--/api/v2/push/send/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: "ExponentPushToken[__teLJOMqatQdNw2myYn1r]",
+        data: { extraData: "Some data in the push notification" , "_displayInForeground":true},
+        title: "This is the title, sent via the app",
+        body: "This push notification was sent via the app!",
+      }),
+    });
+  
+    }
+    catch(err){
+      console.log('test err', err);
+    }
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+      }),
+    });
+
+    // Notifications.scheduleNotificationAsync({
+    //   content: {
+    //     title: 'Look at that notification',
+    //     body: "I'm so proud of myself!",
+    //   },
+    //   trigger: { seconds: 1},
+    // });
+
+    // await Notifications.scheduleNotificationAsync({
+    //   content: {
+    //     icon: "dili.png",
+    //     sound: 'SpongeSound.wav', 
+    //     title: "You Received a Hard Push",
+    //     body: 'From SpongeBob',
+    //     data: { data: 'goes here' },
+    //   },
+    //   trigger: { seconds: 1},
+    // });
+ 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
     });
