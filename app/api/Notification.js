@@ -1,7 +1,12 @@
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+
+//
+
+//
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, Button, Platform } from 'react-native';
+import { Text, View, Button, Platform, Alert } from 'react-native';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
@@ -13,13 +18,28 @@ Notifications.setNotificationHandler({
   }),
 });
 
+
+
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  useEffect(() => {
+  const schedulePushNotification = async() => {
+
+    registerForPushNotificationsAsync().then(token =>  Alert.alert(token));
+  //  Alert.alert(expoPushToken);
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        icon: "dili.png",
+        sound: 'SpongeSound.wav', 
+        title: "You Received a Hard Push",
+        body: 'From SpongeBob',
+        data: { data: 'goes here' },
+      },
+      trigger: { seconds: 1},
+    });
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -34,7 +54,24 @@ export default function App() {
       Notifications.removeNotificationSubscription(notificationListener.current);
       Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, []);
+  }
+
+  // const pushButton = () => {
+  //   registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+  //   notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+  //     setNotification(notification);
+  //   });
+
+  //   responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+  //     console.log(response);
+  //   });
+
+  //   return () => {
+  //     Notifications.removeNotificationSubscription(notificationListener.current);
+  //     Notifications.removeNotificationSubscription(responseListener.current);
+  //   };
+  // }
 
   return (
     <Screen
@@ -49,6 +86,7 @@ export default function App() {
         <Text>Title: {notification && notification.request.content.title} </Text>
         <Text>Body: {notification && notification.request.content.body}</Text>
         <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
+        <Text>Push token: {expoPushToken}</Text>
       </View>
       <AppButton 
         
@@ -62,18 +100,6 @@ export default function App() {
   );
 }
 
-async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      icon: "dili.png",
-      sound: 'SpongeSound.wav', 
-      title: "You Received a Hard Push",
-      body: 'From SpongeBob',
-      data: { data: 'goes here' },
-    },
-    trigger: { seconds: 1},
-  });
-}
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -89,7 +115,8 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    setExpoPushToken(token);
+    
   } else {
     alert('Must use physical device for Push Notifications');
   }
