@@ -53,6 +53,7 @@ function LoginScreen({navigation}) {
         />
 
         <AppButton title =  "Login" onPress={
+<<<<<<< HEAD
 
                 () => {
                     // SignIn();
@@ -61,6 +62,11 @@ function LoginScreen({navigation}) {
 
              
 
+=======
+            () => {
+                navigation.navigate('Notification')
+            }
+>>>>>>> c07bca142eb1589ab4d8df1766139bf23646d217
         }
         />
         
