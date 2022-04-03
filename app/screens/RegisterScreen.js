@@ -58,7 +58,7 @@ function RegisterScreen({navigation}) {
                     console.log('uid', user.uid);
                     docRef = await addDoc(collection(db, "users"), {
                     email: user.email,
-                    name: user.email,
+                    username: user.email,
                     uid: user.uid,
                     friendList: [],
                     pushToken: [expoPushToken.data]
