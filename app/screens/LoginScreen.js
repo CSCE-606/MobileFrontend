@@ -1,13 +1,17 @@
 import React from 'react';
-import {useState} from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, View ,Image,Alert} from 'react-native';
 import Screen from '../components/Screen';
+
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
 import {authentication} from "../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {db} from '../../firebase';
 import { collection, addDoc } from "firebase/firestore"; 
+
+
+
 
 function LoginScreen({navigation}) {
     const [email, setEmail]=useState();
@@ -15,21 +19,28 @@ function LoginScreen({navigation}) {
     const [user, setUser] = useState();
 
     const SignIn =  async() => {
-    let user;
-    try{
-        user = await signInWithEmailAndPassword(authentication, email, password)
-    }catch(error)   
-    {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        Alert.alert(errorMessage);
-        console.log(errorCode,errorMessage);
-     };
+        let user;
+        
+        try{
+            user = await signInWithEmailAndPassword(authentication, email, password)
+        }catch(error)   
+        {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            Alert.alert(errorMessage);
+            console.log('login error')
+            return false;
+        };
+        setUser(user);
+        console.log('true');
+        return true;
+    }
+    
 
-  setUser(user);
-}
 
+  
     return (
+
     <Screen style = {styles.container}>
         <Image style = {styles.logo} source = {require("../assets/Ping_logo.png")}/>
         <AppTextInput 
@@ -53,14 +64,22 @@ function LoginScreen({navigation}) {
         />
 
         <AppButton title =  "Login" onPress={
-            () => {
-                navigation.navigate('Notification')
+            async() => {
+               const res = await SignIn();
+               console.log('login',res);
+                if (res == true)
+                {
+                    navigation.navigate('Friend');
+                } else {
+                    navigation.navigate('Login');
+                }
             }
         }
         />
         
     </Screen>
   );
+ 
 };
 
 const styles = StyleSheet.create({
