@@ -54,7 +54,7 @@ function LoginScreen({navigation}) {
 
         <AppButton title =  "Login" onPress={
             () => {
-                navigation.navigate('Notification')
+                navigation.navigate('Friend')
             }
         }
         />

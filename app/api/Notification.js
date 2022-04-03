@@ -51,8 +51,8 @@ export default function App() {
       body: JSON.stringify({
         to: "ExponentPushToken[__teLJOMqatQdNw2myYn1r]",
         data: { extraData: "Some data in the push notification" , "_displayInForeground":true},
-        title: "This is the title, sent via the app",
-        body: "This push notification was sent via the app!",
+        title: "ni hao",
+        body: "Howdy",
       }),
     });
   
