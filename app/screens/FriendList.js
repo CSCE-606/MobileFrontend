@@ -6,6 +6,12 @@ import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
 import Screen from '../components/Screen';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {createStructuredSelector} from 'reselect';
+
+import {getUser} from '../redux/user';
+
 export function FriendList({navigation}) {
   
   const [friendList, setFriendList] = useState([]);
