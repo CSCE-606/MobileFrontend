@@ -6,11 +6,19 @@ import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
 import Screen from '../components/Screen';
+<<<<<<< HEAD
 
 import NotificationPopup from '../components/NotificationPopup';
 
 import { Notification } from '../api/Notification';
 
+=======
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {createStructuredSelector} from 'reselect';
+
+import {getUser} from '../redux/user';
+>>>>>>> f2d7bd3adf1faae0051896e108b097f257befcbd
 
 export function FriendList({navigation}) {
 

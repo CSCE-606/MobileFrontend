@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { StyleSheet, Text, View ,Image,Alert} from 'react-native';
 import Screen from '../components/Screen';
+import {connect} from 'react-redux';
 
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
@@ -9,7 +10,6 @@ import {authentication} from "../../firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {db} from '../../firebase';
 import { collection, addDoc } from "firebase/firestore"; 
-
 
 
 
@@ -31,8 +31,8 @@ function LoginScreen({navigation}) {
             console.log('login error')
             return false;
         };
+        console.log(user);
         setUser(user);
-        console.log('true');
         return true;
     }
     
@@ -100,4 +100,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default LoginScreen;
+const mapStateToProps = (state) => {
+    const { users } = state
+    return { users }
+  };
+  
+
+export default  connect(mapStateToProps)(LoginScreen);

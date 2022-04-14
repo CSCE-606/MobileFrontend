@@ -32,6 +32,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-awesome-alerts": "^1.5.2",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-safe-area-context": "3.3.2",
@@ -39,7 +40,10 @@
     "react-native-svg": "12.1.1",
     "react-native-web": "0.17.1",
     "react-native-webview": "11.15.0",
+    "react-redux": "^7.2.8",
     "redux": "^4.1.2",
+    "redux-persist": "^6.0.0",
+    "registry": "^0.3.0",
     "zlib": "^1.0.5"
   },
   "devDependencies": {
