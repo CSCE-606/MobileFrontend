@@ -6,8 +6,16 @@ import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
 import Screen from '../components/Screen';
+
+import NotificationPopup from '../components/NotificationPopup';
+
+import { Notification } from '../api/Notification';
+
+
 export function FriendList({navigation}) {
-  
+
+
+
   const [friendList, setFriendList] = useState([]);
   const userName = "xiaosb3@gmail.com";
   const userRef = collection(db,'users');
@@ -49,6 +57,10 @@ export function FriendList({navigation}) {
   return(
 
 <SafeAreaView style={styles.container}>
+   
+    <NotificationPopup />
+
+  
     <View>
       {console.log('fefe',friendList)}
     

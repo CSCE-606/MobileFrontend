@@ -15,7 +15,6 @@ function WelcomeScreen({navigation}) {
             <View style = {styles.buttonsContainer}>
               <AppButton title = "Login" onPress = {()=> navigation.navigate("Login")}/>
               <AppButton title = "Register" color = '#87cefa'  onPress = {()=> navigation.navigate("Register")}/>
-
             </View>
             
         </ImageBackground>

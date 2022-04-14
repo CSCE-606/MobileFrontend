@@ -64,6 +64,8 @@ function LoginScreen({navigation}) {
         />
 
         <AppButton title =  "Login" onPress={
+            navigation.navigate('Friend')
+            /*
             async() => {
                const res = await SignIn();
                console.log('login',res);
@@ -73,7 +75,9 @@ function LoginScreen({navigation}) {
                 } else {
                     navigation.navigate('Login');
                 }
+                
             }
+            */
         }
         />
         
