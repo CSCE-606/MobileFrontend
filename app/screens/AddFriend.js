@@ -23,12 +23,11 @@ function AddFriend({navigation}) {
       const q1 = query(userRef);
     }
     const searchUser = async () => {
-      const q1 = query(userRef, orderBy('username'), startAt(username.upper() || username.lower() ), endAt((username+"\uf8ff").upper() || (username+"\uf8ff").lower()));
-      
+      const q1 = query(userRef, orderBy('username'), startAt(username), endAt(username+"\uf8ff"));
       console.log('using queryyyyy'); 
       const PotentialFriends= await getDocs(q1);
       let tempPotentialFriendList= [];
-      
+      console.log("profile user name", profileUser);
       PotentialFriends.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         tempPotentialFriendList.push(doc.data());
@@ -37,6 +36,7 @@ function AddFriend({navigation}) {
       console.log("friendlist",tempPotentialFriendList);
       setPotentialFriendList(tempPotentialFriendList);
       updateDisplay(true);
+
     };
  
     return(
@@ -59,8 +59,8 @@ function AddFriend({navigation}) {
         PotentialFriendList.map((l, i) => 
         (<AddFriendItem
              key={i}
-             title={l.Name}
-             onPress={addFriend(l.name)}
+             title={l.username}
+            username={l.username}
            />
          )
      )

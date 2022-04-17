@@ -17,8 +17,6 @@ import {createStructuredSelector} from 'reselect';
 import {getUser} from '../redux/usersReducer';
 
 
-import {getUser} from '../redux/user';
-
 
 export function FriendList({navigation}) {
 

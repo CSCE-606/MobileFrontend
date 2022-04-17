@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Tip, showTip, closeTip } from "react-native-tip";
 import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import TipProvider from "react-native-tip";
 import { NotificationComponent} from './NotificationComponent';
 
 function NotificationPopup () {
 
-    const [_showTip, setShowTip] = useState(false)
+    // const [_showTip, setShowTip] = useState(false)
     const [friendName, setFriendName] = useState("User")
 
- 
     return(
         <View>
-            <Tip
+            {/* <Tip
                 id='notification'
                 title={friendName+" send you a friend request"}
                 body={ <NotificationComponent /> }
@@ -31,9 +28,9 @@ function NotificationPopup () {
                 >
                     <Icon name="heart" color='blue' size={35}/>
                 </TouchableOpacity>
-            </Tip>
+            </Tip> */}
 
-        <TipProvider
+        {/* <TipProvider
                     overlayOpacity={0.5}
                     titleStyle={{
                         fontWeight: 'bold',
@@ -54,7 +51,7 @@ function NotificationPopup () {
                     }}
                     prevNextButtonStyle={{
                     }}
-                />
+                /> */}
         
         
         
