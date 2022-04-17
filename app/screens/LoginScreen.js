@@ -38,9 +38,11 @@ function LoginScreen({navigation,props}) {
             return false;
         };
         console.log(user);
-        setUser(user);
+        console.log('useremail', user.user.email);
+        setUser(user.user.email);
      
-        dispatch(setUserRedux(user));
+        dispatch(setUserRedux(user.user.email));
+        return true;
     }
     
 
@@ -68,24 +70,20 @@ function LoginScreen({navigation,props}) {
             textContentType = "password"
             secureTextEntry 
             onChangeText = {text => setPassword(text)}
-        />
+            />
+            <AppButton title ="Login"
+         onPress={async() => {
+        const res = await SignIn();
 
-        <AppButton title =  "Login" onPress={
-            navigation.navigate('Friend')
-            /*
-            async() => {
-              await SignIn();
-              navigation.navigate('Friend');
-                // if (res == true)
-                // {
-                //     navigation.navigate('Friend');
-                // } else {
-                //     navigation.navigate('Login');
-                // }
-            }
-            */
+        if (res == true)
+        {
+        navigation.navigate('Friend');
+        } else {
+        navigation.navigate('Login');
         }
-        />
+        }
+            
+        } />
         
     </Screen>
   );
