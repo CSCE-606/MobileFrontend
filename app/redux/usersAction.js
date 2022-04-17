@@ -1,6 +1,7 @@
-export const addFriend = friendsIndex => (
+export const setUserRedux = userInfo => (
+
     {
-      type: 'ADD_FRIEND',
-      payload: friendsIndex,
+      type: 'SET_USER',
+      payload: userInfo,
     }
   );

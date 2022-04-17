@@ -9,18 +9,23 @@ import { addDoc, query, collection, where, getDocs, orderBy,startAt,endAt} from 
 import {orderByChild} from 'firebase/database';
 import {db} from '../../firebase';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import { useSelector } from 'react-redux';
+import {getUser} from '../redux/usersReducer';
 
 function AddFriend({navigation}) {
     const [username, setUserName]= useState();
     const [PotentialFriendList,setPotentialFriendList] = useState([]);
     const [displayFriendList, updateDisplay] = useState(false);
+    const profileUser = useSelector(getUser);
     const userRef = collection(db,'users');
-    
+    const addFriend = async (username) => {
+      console.log("user namez", username.email);  
+      const q1 = query(userRef);
+    }
     const searchUser = async () => {
-      const q1 = query(userRef, orderBy('Name')
-      , startAt(username), endAt(username+"\uf8ff")); 
-      // const q1= query(userRef, where('Name','>=',username))
-      const PotentialFriends= await getDocs(q1)
+      const q1 = query(userRef, orderBy('username'), startAt(username), endAt(username+"\uf8ff"));
+      console.log('using queryyyyy'); 
+      const PotentialFriends= await getDocs(q1);
       let tempPotentialFriendList= [];
       
       PotentialFriends.forEach((doc) => {
@@ -28,6 +33,7 @@ function AddFriend({navigation}) {
         tempPotentialFriendList.push(doc.data());
         console.log(doc.id, " => ", doc.data());
       });
+      console.log("friendlist",tempPotentialFriendList);
       setPotentialFriendList(tempPotentialFriendList);
       updateDisplay(true);
     };
@@ -39,8 +45,7 @@ function AddFriend({navigation}) {
     <Text>UserName</Text>    
       <Button
         title="Search"
-        onPress={() => searchUser()
-        }
+        onPress={() => searchUser()}
       />
       <TextInput
         style={styles.input}
@@ -54,6 +59,7 @@ function AddFriend({navigation}) {
         (<AddFriendItem
              key={i}
              title={l.Name}
+             onPress={addFriend(l.name)}
            />
          )
      )
@@ -68,23 +74,6 @@ function AddFriend({navigation}) {
 };
 
 
-// const createThreeButtonAlert = () =>
-// Alert.alert(
-//   "I need SpongeBob!",
-//   "I need SpongeBob",
-//   [
-//     {
-//       text: "Ask me later",
-//       onPress: () => console.log("Ask me later pressed")
-//     },
-//     {
-//       text: "Cancel",
-//       onPress: () => console.log("Cancel Pressed"),
-//       style: "cancel"
-//     },
-//     { text: "OK", onPress: () => console.log("OK Pressed") }
-//   ]
-// );
 
 const styles = StyleSheet.create({
     container: {

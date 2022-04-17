@@ -1,36 +1,25 @@
 import { combineReducers } from 'redux';
 
+import get from 'lodash.get'
+
 const INITIAL_STATE = {
     user:null
 };
 
-const friendsReducer = (state = INITIAL_STATE, action) => {
+const usersReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case 'ADD_FRIEND':
+        case 'SET_USER':
           // Pulls current and possible out of previous state
           // We do not want to alter state directly in case
           // another action is altering it at the same time
-          const {
-            current,
-            possible,
-          } = state;
-    
-          // Pull friend out of friends.possible
-          // Note that action.payload === friendIndex
-          const addedFriend = possible.splice(action.payload, 1);
-    
-          // And put friend in friends.current
-          current.push(addedFriend);
-    
-          // Finally, update the redux state
-          const newState = { current, possible };
-      
-          return newState;
+          return {...state, user: action.payload}
     default:
       return state
   }
 };
 
+export const getUser = (state) => state.users.user;
+
 export default combineReducers({
-  friends: friendsReducer
+  users: usersReducer
 });

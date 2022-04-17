@@ -61,6 +61,7 @@ function RegisterScreen({navigation}) {
                     username: user.email,
                     uid: user.uid,
                     friendList: [],
+                    friendRequests: [],
                     pushToken: [expoPushToken.data]
                 });
             }

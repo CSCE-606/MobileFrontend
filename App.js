@@ -9,7 +9,6 @@ import {f, auth, database} from './app/config/config.js';
 import usersReducer from './app/redux/usersReducer';
 
 const store = createStore(usersReducer);
-
 export default function App(){
   return(
     <Provider store={store}>

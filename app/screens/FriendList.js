@@ -7,13 +7,15 @@ import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
 import Screen from '../components/Screen';
 import {connect} from 'react-redux';
+import { useSelector } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createStructuredSelector} from 'reselect';
+import {getUser} from '../redux/usersReducer';
 
-import {getUser} from '../redux/user';
 
 export function FriendList({navigation}) {
-  
+  const profileUser = useSelector(getUser);
+
   const [friendList, setFriendList] = useState([]);
   const userName = "xiaosb3@gmail.com";
   const userRef = collection(db,'users');
@@ -49,7 +51,10 @@ export function FriendList({navigation}) {
   setFriendList(friends);
   }
   useEffect(() => 
-      listFriend()
+  {
+    console.log("testz");
+      // listFriend()
+  }
   ,[])
 
   return(

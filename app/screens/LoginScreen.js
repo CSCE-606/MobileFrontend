@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View ,Image,Alert} from 'react-native';
 import Screen from '../components/Screen';
 import {connect} from 'react-redux';
@@ -10,15 +11,20 @@ import {authentication} from "../../firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {db} from '../../firebase';
 import { collection, addDoc } from "firebase/firestore"; 
+import {setUserRedux} from '../redux/usersAction';
+import {getUser} from '../redux/usersReducer';
+import { bindActionCreators } from 'redux';
 
 
-
-function LoginScreen({navigation}) {
+function LoginScreen({navigation,props}) {
     const [email, setEmail]=useState();
     const [password, setPassword]=useState();
     const [user, setUser] = useState();
 
+    const dispatch = useDispatch();
+
     const SignIn =  async() => {
+        
         let user;
         
         try{
@@ -33,7 +39,8 @@ function LoginScreen({navigation}) {
         };
         console.log(user);
         setUser(user);
-        return true;
+     
+        dispatch(setUserRedux(user));
     }
     
 
@@ -65,14 +72,14 @@ function LoginScreen({navigation}) {
 
         <AppButton title =  "Login" onPress={
             async() => {
-               const res = await SignIn();
-               console.log('login',res);
-                if (res == true)
-                {
-                    navigation.navigate('Friend');
-                } else {
-                    navigation.navigate('Login');
-                }
+              await SignIn();
+              navigation.navigate('Friend');
+                // if (res == true)
+                // {
+                //     navigation.navigate('Friend');
+                // } else {
+                //     navigation.navigate('Login');
+                // }
             }
         }
         />
@@ -102,4 +109,10 @@ const mapStateToProps = (state) => {
   };
   
 
-export default  connect(mapStateToProps)(LoginScreen);
+  const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+      setUserRedux,
+    }, dispatch)
+  );
+
+export default  connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

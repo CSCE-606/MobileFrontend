@@ -2,7 +2,7 @@ import React, {useState}from 'react';
 import { View, StyleSheet, Text, Image, Button } from 'react-native';
 import AppText from './AppText';
 import AwesomeAlert from 'react-native-awesome-alerts';
-function AddFriendItem({ title, image }) {
+function AddFriendItem({ title, image,onPress }) {
     // const [popup,Setpopup]=useState(false)
     const [displayAlert, showAlert] = useState(false);
 
@@ -15,7 +15,7 @@ function AddFriendItem({ title, image }) {
             </View>
             <AppText style={styles.title}>{title}</AppText>
             <Button  title ="Add Friend"
-                     onPress={() => showAlert(true)}
+                     onPress={async() => {await showAlert(true); await onPress();}}
             />
 
             <View>
