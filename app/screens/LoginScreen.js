@@ -71,6 +71,8 @@ function LoginScreen({navigation,props}) {
         />
 
         <AppButton title =  "Login" onPress={
+            navigation.navigate('Friend')
+            /*
             async() => {
               await SignIn();
               navigation.navigate('Friend');
@@ -81,6 +83,7 @@ function LoginScreen({navigation,props}) {
                 //     navigation.navigate('Login');
                 // }
             }
+            */
         }
         />
         
