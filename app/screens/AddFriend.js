@@ -23,7 +23,8 @@ function AddFriend({navigation}) {
       const q1 = query(userRef);
     }
     const searchUser = async () => {
-      const q1 = query(userRef, orderBy('username'), startAt(username), endAt(username+"\uf8ff"));
+      const q1 = query(userRef, orderBy('username'), startAt(username.upper() || username.lower() ), endAt((username+"\uf8ff").upper() || (username+"\uf8ff").lower()));
+      
       console.log('using queryyyyy'); 
       const PotentialFriends= await getDocs(q1);
       let tempPotentialFriendList= [];
