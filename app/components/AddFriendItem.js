@@ -12,22 +12,24 @@ function AddFriendItem({ title, image,username }) {
     const showUsername = () =>{
         console.log("efew",username);
         console.log("efprofileuser", profileUser);
-        try {
-            let docRef;
-            if (user){
-                docRef = await addDoc(collection(db, "users"), {
-                email: user.email,
-                username: user.email,
-                uid: user.uid,
-                friendList: [],
-                friendRequests: [],
-                pushToken: [expoPushToken.data]
-            });
-        }
-            console.log("Document written with ID: ", docRef.id);
-        } catch (e) {
-            console.error("Error adding document: ", e);
-        }
+        const userRef = doc(db,'users', username);
+        // let updateFriendRequestQ = query(userRef, )
+        // try {
+        //     let docRef;
+        //     if (user){
+        //         docRef = await addDoc(collection(db, "users"), {
+        //         email: user.email,
+        //         username: user.email,
+        //         uid: user.uid,
+        //         friendList: [],
+        //         friendRequests: [],
+        //         pushToken: [expoPushToken.data]
+        //     });
+        // }
+        //     console.log("Document written with ID: ", docRef.id);
+        // } catch (e) {
+        //     console.error("Error adding document: ", e);
+        // }
     }
 
 
