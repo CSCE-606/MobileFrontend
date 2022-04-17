@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TipProvider from "react-native-tip";
 import { NotificationComponent} from './NotificationComponent';
+import styles from '../config/styles';
 
 function NotificationPopup () {
 
@@ -12,7 +13,7 @@ function NotificationPopup () {
 
  
     return(
-        <View>
+        <View style={{left: 300, top: -300}}>
             <Tip
                 id='notification'
                 title={friendName+" send you a friend request"}
@@ -29,7 +30,7 @@ function NotificationPopup () {
                     }}
                     style={{ padding: 10, borderRadius: 50 }}
                 >
-                    <Icon name="heart" color='blue' size={35}/>
+                    <Icon name="heart" color='blue' size={35} />
                 </TouchableOpacity>
             </Tip>
 
