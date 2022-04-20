@@ -40,9 +40,11 @@ function LoginScreen({navigation,props}) {
             return false;
         };
         console.log(user);
-        setUser(user);
+        console.log('useremail', user.user.email);
+        setUser(user.user.email);
      
-        dispatch(setUserRedux(user));
+        dispatch(setUserRedux(user.user.email));
+        return true;
     }
     
 
@@ -75,21 +77,21 @@ function LoginScreen({navigation,props}) {
         />
      
         
-        <AppButton title =  "Login" onPress={
-           
-           
-            async() => {
-              await SignIn();
-              navigation.navigate('Friend');
-                if (res == true)
-                {
-                    navigation.navigate('Friend');
-                } else {
-                    navigation.navigate('Login');
-                }
-            }
+        
+        <AppButton title ="Login"
+         onPress={async() => {
+             
+        const res = await SignIn();
+
+        if (res == true)
+        {
+        navigation.navigate('Friend');
+        } else {
+        navigation.navigate('Login');
         }
-        />
+        }
+            
+        } />
         
     </Screen>
   );

@@ -2,10 +2,35 @@ import React, {useState}from 'react';
 import { View, StyleSheet, Text, Image, Button } from 'react-native';
 import AppText from './AppText';
 import AwesomeAlert from 'react-native-awesome-alerts';
-function AddFriendItem({ title, image,onPress }) {
+import {getUser} from '../redux/usersReducer';
+import { useSelector } from 'react-redux';
+
+function AddFriendItem({ title, image,username }) {
     // const [popup,Setpopup]=useState(false)
     const [displayAlert, showAlert] = useState(false);
-
+    const profileUser = useSelector(getUser);
+    const showUsername = () =>{
+        console.log("efew",username);
+        console.log("efprofileuser", profileUser);
+        const userRef = doc(db,'users', username);
+        // let updateFriendRequestQ = query(userRef, )
+        // try {
+        //     let docRef;
+        //     if (user){
+        //         docRef = await addDoc(collection(db, "users"), {
+        //         email: user.email,
+        //         username: user.email,
+        //         uid: user.uid,
+        //         friendList: [],
+        //         friendRequests: [],
+        //         pushToken: [expoPushToken.data]
+        //     });
+        // }
+        //     console.log("Document written with ID: ", docRef.id);
+        // } catch (e) {
+        //     console.error("Error adding document: ", e);
+        // }
+    }
 
 
     return(
@@ -15,7 +40,7 @@ function AddFriendItem({ title, image,onPress }) {
             </View>
             <AppText style={styles.title}>{title}</AppText>
             <Button  title ="Add Friend"
-                     onPress={async() => {await showAlert(true); await onPress();}}
+                     onPress={showUsername}
             />
 
             <View>
@@ -36,7 +61,7 @@ function AddFriendItem({ title, image,onPress }) {
           confirmButtonColor="#DD6B55"
           onCancelPressed={() => {showAlert(false)
           }}
-          onConfirmPressed={() => {showAlert(false)
+          onConfirmPressed={() => {showUsername();
           }}
         />
 
