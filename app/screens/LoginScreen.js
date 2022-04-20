@@ -1,11 +1,13 @@
 import React from 'react';
-import { useState } from 'react';
+import {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View ,Image,Alert} from 'react-native';
+import { Pressable, StyleSheet, Text, View ,Image,Alert} from 'react-native';
+
 import Screen from '../components/Screen';
 import {connect} from 'react-redux';
 
 import AppTextInput from '../components/AppTextInput';
+import AppPasswordTextInput from '../components/AppPasswordTextInput';
 import AppButton from '../components/AppButton';
 import {authentication} from "../../firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -20,7 +22,7 @@ function LoginScreen({navigation,props}) {
     const [email, setEmail]=useState();
     const [password, setPassword]=useState();
     const [user, setUser] = useState();
-
+    
     const dispatch = useDispatch();
 
     const SignIn =  async() => {
@@ -59,31 +61,33 @@ function LoginScreen({navigation,props}) {
             textContentType = "emailAddress"
             onChangeText = {text => setEmail(text)}
         />
-        <AppTextInput 
+
+        <AppPasswordTextInput
             autoCapitalize = 'none'
             autoCorrect = {false}
-            keyboardType = "email-address"
+            keyboardType = "default"
             icon = "lock"
             placeholder = "Password"
             textContentType = "password"
-            secureTextEntry 
+            value={password}
+            enablesReturnKeyAutomatically
             onChangeText = {text => setPassword(text)}
         />
-
+     
+        
         <AppButton title =  "Login" onPress={
-            navigation.navigate('Friend')
-            /*
+           
+           
             async() => {
               await SignIn();
               navigation.navigate('Friend');
-                // if (res == true)
-                // {
-                //     navigation.navigate('Friend');
-                // } else {
-                //     navigation.navigate('Login');
-                // }
+                if (res == true)
+                {
+                    navigation.navigate('Friend');
+                } else {
+                    navigation.navigate('Login');
+                }
             }
-            */
         }
         />
         

@@ -3,6 +3,7 @@ import {useState} from 'react';
 import { StyleSheet,Image,Button, Alert} from 'react-native';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
+import AppPasswordTextInput from '../components/AppPasswordTextInput';
 import AppButton from '../components/AppButton';
 import PopUp from '../components/Popup';
 import {authentication, db} from "../../firebase";
@@ -82,14 +83,13 @@ function RegisterScreen({navigation}) {
             textContentType = "emailAddress"
             onChangeText = {text => setEmail(text)}
         />
-        <AppTextInput 
+        <AppPasswordTextInput 
             autoCapitalize = 'none'
             autoCorrect = {false}
-            keyboardType = "email-address"
+            keyboardType = "default"
             icon = "lock"
             placeholder = "Password"
             textContentType = "password"
-            secureTextEntry 
             onChangeText = {text => setPassword(text)}
         />
         <PopUp popUpVisible={popUpVisible}  setPopUpVisible={setPopUpVisible} popUpText={popUpText} />

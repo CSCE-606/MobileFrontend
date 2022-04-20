@@ -23,9 +23,10 @@ function AddFriend({navigation}) {
       const q1 = query(userRef);
     }
     const searchUser = async () => {
-      const q1 = query(userRef, orderBy('username'), startAt(username.upper() || username.lower() ), endAt((username+"\uf8ff").upper() || (username+"\uf8ff").lower()));
-      
-      console.log('using queryyyyy'); 
+      const q1 = query(userRef, orderBy('username'), startAt(username), endAt(username+"\uf8ff"));
+      // const q2 = query(userRef, startAt(username.toLowerCase()), endAt(username.toLowerCase()+"\uf8ff"));
+      // const q3 = query(userRef, startAt(username), endAt(username+"\uf8ff"));
+
       const PotentialFriends= await getDocs(q1);
       let tempPotentialFriendList= [];
       
@@ -59,8 +60,8 @@ function AddFriend({navigation}) {
         PotentialFriendList.map((l, i) => 
         (<AddFriendItem
              key={i}
-             title={l.Name}
-             onPress={addFriend(l.name)}
+             title={l.username}
+             onPress={addFriend(l.username)}
            />
          )
      )
