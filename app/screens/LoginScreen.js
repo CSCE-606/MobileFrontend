@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
-import { StyleSheet, Text, View ,Image,Alert} from 'react-native';
+import { ImageBackground, StyleSheet, Text, View ,Image,Alert} from 'react-native';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppButton from '../components/AppButton';
@@ -10,6 +10,16 @@ function LoginScreen({navigation}) {
     const [email, setEmail]=useState();
     const [password, setPassword]=useState();
     const [user, setUser] = useState();
+    const image = { uri: "file:///Users/wuyue/Desktop/%E5%B0%8F%E9%83%8E%E7%9A%84Photo/pexels-marcus-aurelius-9789300.jpg" };
+    
+
+
+    const App = () => (
+        <View style={styles.container}>
+          <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+          </ImageBackground>
+        </View>
+      );
 
     const SignIn =  async() => {
     let user;
@@ -26,8 +36,14 @@ function LoginScreen({navigation}) {
 }
 
     return (
-    <Screen style = {styles.container}>
-        <Image style = {styles.logo} source = {require("../assets/Ping_logo.png")}/>
+    
+        <ImageBackground 
+                   
+                   source = {require("../assets/WCP.jpg")}
+                   style = {styles.background}
+        >
+            <View style={styles.view}>
+        <Image style = {styles.logo} source = {require("../assets/Logo111.png")}/>
         <AppTextInput 
             autoCapitalize = 'none'
             autoCorrect = {false}
@@ -36,6 +52,7 @@ function LoginScreen({navigation}) {
             placeholder = "Email"
             textContentType = "emailAddress"
             onChangeText = {text => setEmail(text)}
+            style={styles.textInput}
         />
         <AppTextInput 
             autoCapitalize = 'none'
@@ -46,20 +63,24 @@ function LoginScreen({navigation}) {
             textContentType = "password"
             secureTextEntry 
             onChangeText = {text => setPassword(text)}
+            style={styles.textInput}
         />
 
-        <AppButton title =  "Login" onPress={
-
-                () => {
-                navigation.navigate("Friend");
-            }
-
-             
-
-        }
-        />
+          
         
-    </Screen>
+        <AppButton title =  "Login" style={styles.loginbutton} onPress={
+
+                 () => {
+                 navigation.navigate("Friend");
+             }
+        
+        }
+        />   
+        <Text style={styles.loginText} >Forgot Password?</Text>
+        <Text onPress={() => navigation.navigate("Register")} style={styles.loginText} >Register</Text>
+        </View>
+        </ImageBackground>
+  
   );
 };
 
@@ -70,11 +91,49 @@ const styles = StyleSheet.create({
     logo:{
         width:230,
         height:230,
+        alignSelf:'center',
+        marginTop: -150,
+        marginBottom:150,
+    },
+    loginbutton:{
+        color: "black",
+        backgroundColor:"black",
+       
+        flex: 1,
+        justifyContent: "center"
+        
+    },
+    background:{
+        flex:1,
+        justifyContent: "flex-end",
+        backgroundColor:"transparent",
+        alignItems: "center"
+    }, 
+    view: {
+        flex: 1,
+        alignItems:'center',
+        justifyContent: "center"
+    },
+    textInput:{
+        width:250,
+        height:10,
         
         alignSelf:'center',
         marginTop: 10,
-        marginBottom:20,
+        marginBottom:10,
+    },
+    baseText: {
+        fontFamily: "Cochin"
+    },
+    titleText: {
+        fontSize: 20,
+        fontWeight: "bold"
+    },
+    loginText: {
+        color:"#FFFFFF",
+        fontSize:16, 
+
     }
-})
+});
 
 export default LoginScreen;
