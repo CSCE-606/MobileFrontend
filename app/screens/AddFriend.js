@@ -1,33 +1,45 @@
-import React, {useState} from 'react';
-import { View, Text, Image, StyleSheet, Button, SafeAreaView, Alert, TextInput, } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { View, Text, Image, StyleSheet, Button, SafeAreaView, Alert, TextInput, ScrollView} from 'react-native';
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
-import ListItem from '../components/ListItem';
+import AddFriendItem from '../components/AddFriendItem';
 import Screen from '../components/Screen';
 import {authentication} from "../../firebase";
+import { addDoc, query, collection, where, getDocs, orderBy,startAt,endAt} from 'firebase/firestore';
+import {orderByChild} from 'firebase/database';
+import {db} from '../../firebase';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import { useSelector } from 'react-redux';
+import {getUser} from '../redux/usersReducer';
+
 function AddFriend({navigation}) {
     const [username, setUserName]= useState();
-    // const listAllUsers = (nextPageToken) => {
-    //     console.log("listAllUsers")
-    //     // List batch of
-    //     authentication
-    //       .listUsers(1000, nextPageToken)
-    //       .then((listUsersResult) => {
-    //         listUsersResult.users.forEach((userRecord) => {
-    //           console.log('user', userRecord.toJSON());
-    //         });
-    //         if (listUsersResult.pageToken) {
-    //           // List next batch of users.
-    //           listAllUsers(listUsersResult.pageToken);
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         console.log('Error listing users:', error);
-    //       });
-    //   };
-    //   // Start listing users from the beginning, 1000 at a time.
-     
+    const [PotentialFriendList,setPotentialFriendList] = useState([]);
+    const [displayFriendList, updateDisplay] = useState(false);
+    const profileUser = useSelector(getUser);
+    const userRef = collection(db,'users');
+    const addFriend = async (username) => {
+      console.log("user namez", username.email);  
+      const q1 = query(userRef);
+    }
+    const searchUser = async () => {
+      const q1 = query(userRef, orderBy('username'), startAt(username), endAt(username+"\uf8ff"));
+      // const q2 = query(userRef, startAt(username.toLowerCase()), endAt(username.toLowerCase()+"\uf8ff"));
+      // const q3 = query(userRef, startAt(username), endAt(username+"\uf8ff"));
+
+      const PotentialFriends= await getDocs(q1);
+      let tempPotentialFriendList= [];
       
+      PotentialFriends.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        tempPotentialFriendList.push(doc.data());
+        console.log(doc.id, " => ", doc.data());
+      });
+      console.log("friendlist",tempPotentialFriendList);
+      setPotentialFriendList(tempPotentialFriendList);
+      updateDisplay(true);
+    };
+ 
     return(
 
 <SafeAreaView style={styles.container}>
@@ -35,8 +47,7 @@ function AddFriend({navigation}) {
     <Text>UserName</Text>    
       <Button
         title="Search"
-        onPress={() => listAllUsers()
-        }
+        onPress={() => searchUser()}
       />
       <TextInput
         style={styles.input}
@@ -44,7 +55,20 @@ function AddFriend({navigation}) {
         value={username}
         placeholder="username"
       />
+    <ScrollView>
+      {displayFriendList ? 
+        PotentialFriendList.map((l, i) => 
+        (<AddFriendItem
+             key={i}
+             title={l.username}
+             onPress={addFriend(l.username)}
+           />
+         )
+     )
+      : null}
+    </ScrollView>
     </View>
+    
       
         </SafeAreaView>
 
@@ -52,23 +76,6 @@ function AddFriend({navigation}) {
 };
 
 
-const createThreeButtonAlert = () =>
-Alert.alert(
-  "I need SpongeBob!",
-  "I need SpongeBob",
-  [
-    {
-      text: "Ask me later",
-      onPress: () => console.log("Ask me later pressed")
-    },
-    {
-      text: "Cancel",
-      onPress: () => console.log("Cancel Pressed"),
-      style: "cancel"
-    },
-    { text: "OK", onPress: () => console.log("OK Pressed") }
-  ]
-);
 
 const styles = StyleSheet.create({
     container: {

@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-
+import { getFirestore } from "firebase/firestore";
 // import admin from "firebase-admin";
 
 import {serviceAccount} from "./curastone-74faf-firebase-adminsdk-816zm-ba0119a794.json";
@@ -32,3 +32,4 @@ const app = initializeApp(
 );
 const analytics = getAnalytics(app);
 export const authentication = getAuth(app);
+export const db = getFirestore(app);

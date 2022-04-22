@@ -1,15 +1,91 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Button, SafeAreaView, Alert } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert } from 'react-native';
+import { addDoc, query, collection, where, getDocs, orderBy,startAt,endAt} from 'firebase/firestore';
+import {db} from '../../firebase';
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
 import Screen from '../components/Screen';
+import NotificationPopup from '../components/NotificationPopup';
+
+import { Notification } from '../api/Notification';
+
+import {connect} from 'react-redux';
+import { useSelector } from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {createStructuredSelector} from 'reselect';
+import {getUser} from '../redux/usersReducer';
+
+
+
 export function FriendList({navigation}) {
-    return(
+
+  const profileUser = useSelector(getUser);
+  const [friendList, setFriendList] = useState([]);
+  const userName = "xiaosb3@gmail.com";
+  const userRef = collection(db,'users');
+  const listFriend = async() => {
+  const userQ = query(userRef, where("username","==",userName)); 
+  const querySnapShot = await getDocs(userQ);
+  let friendList = [];
+  querySnapShot.forEach((doc) => {
+    friendList = doc.data().friendList;
+    
+  })
+  console.log('friendlist', friendList);
+  const pushTokenQ = query(userRef, where("username","in",friendList));
+  let tokenSnapShot 
+  try{
+    tokenSnapShot  = await getDocs(pushTokenQ);
+  }catch(err)
+  {
+    cosnole.log(err);
+  }
+  const friends = []
+  tokenSnapShot.forEach((doc) => {
+    
+    const res = doc.data();
+    const username = res.username;
+    const pushToken = res.pushToken;
+    friends.push({
+      username,
+      pushToken
+    })
+  })
+
+  setFriendList(friends);
+  }
+  useEffect(() => 
+  {
+    console.log("testz");
+      // listFriend()
+  }
+  ,[])
+
+  return(
 
 <SafeAreaView style={styles.container}>
-                <View>
+   
+    <NotificationPopup />
+
+  
+    <View>
+      {console.log('fefe',friendList)}
+    
+    {
+   friendList.map((l, i) => 
+    
         
+   (<ListItem
+        key={i}
+    
+        title={l.username}
+        pushToken={l.pushToken}
+        image = {require("../assets/fox.png")}
+      />
+    )
+)
+   } 
       <Button
         title="Add Friend"
         onPress={() => 
@@ -23,24 +99,6 @@ export function FriendList({navigation}) {
     );
 };
 
-
-const createThreeButtonAlert = () =>
-Alert.alert(
-  "I need SpongeBob!",
-  "I need SpongeBob",
-  [
-    {
-      text: "Ask me later",
-      onPress: () => console.log("Ask me later pressed")
-    },
-    {
-      text: "Cancel",
-      onPress: () => console.log("Cancel Pressed"),
-      style: "cancel"
-    },
-    { text: "OK", onPress: () => console.log("OK Pressed") }
-  ]
-);
 
 const styles = StyleSheet.create({
     container: {

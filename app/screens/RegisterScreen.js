@@ -1,11 +1,14 @@
 import React from 'react';
 import {useState} from 'react';
-import { ImageBackground,StyleSheet,Image,Button, Text, View} from 'react-native';
+import { ImageBackground,StyleSheet,Image,Button, Text, View,Alert} from 'react-native';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
+import AppPasswordTextInput from '../components/AppPasswordTextInput';
 import AppButton from '../components/AppButton';
 import PopUp from '../components/Popup';
-import {authentication} from "../../firebase";
+import {authentication, db} from "../../firebase";
+import * as Notifications from 'expo-notifications';
+import { collection, addDoc } from "firebase/firestore"; 
 import {  createUserWithEmailAndPassword } from "firebase/auth";
 
 function RegisterScreen({navigation}) {
@@ -13,6 +16,7 @@ function RegisterScreen({navigation}) {
     const [password, setPassword]=useState();
     const [popUpVisible, setPopUpVisible] = useState(false);
     const [popUpText, setPopUpText] = useState();
+    // const [useracc,setUser] = useState();
     const RegisterUser = async(e) => {
         e.preventDefault();
         
@@ -21,19 +25,51 @@ function RegisterScreen({navigation}) {
         }
 
         let user;
+
         try{
-            const createUserRes = await createUserWithEmailAndPassword(authentication, email, password);
-            user = createUserRes.user;
+          const createUserRes = await createUserWithEmailAndPassword(authentication, email, password);
+    
+            if (createUserRes.user)
+            {  
+            user= createUserRes.user;
+            }
         }catch(error)
         { 
             const errorCode = error.code;
             const errorMessage = error.message;
 
-            setPopUpText(errorMessage);
+           Alert.alert(errorMessage);
         }
-        setPopUpText("Register Successful. Please go back to Login page.");
-        setPopUpVisible(true);
+        // setPopUpText("Register Successful. Please go back to Login page.");
+        // setPopUpVisible(true);
+    
+   
+            try {
+                let docRef;
+                const expoPushToken = await Notifications.getExpoPushTokenAsync({
+                    experienceId: '@username/example',
+                    development: true
+                  });
 
+                  console.log(expoPushToken.data);
+                
+                if (user){
+                    console.log(user);
+                    console.log(user.email);
+                    console.log('uid', user.uid);
+                    docRef = await addDoc(collection(db, "users"), {
+                    email: user.email,
+                    username: user.email,
+                    uid: user.uid,
+                    friendList: [],
+                    friendRequests: [],
+                    pushToken: [expoPushToken.data]
+                });
+            }
+                console.log("Document written with ID: ", docRef.id);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
     }
     return (
 
@@ -66,14 +102,13 @@ function RegisterScreen({navigation}) {
             onChangeText = {text => setEmail(text)}
             style={styles.textInput}
         />
-        <AppTextInput 
+        <AppPasswordTextInput 
             autoCapitalize = 'none'
             autoCorrect = {false}
-            keyboardType = "email-address"
+            keyboardType = "default"
             icon = "lock"
             placeholder = "Password"
             textContentType = "password"
-            secureTextEntry 
             onChangeText = {text => setPassword(text)}
             style={styles.textInput}
         />

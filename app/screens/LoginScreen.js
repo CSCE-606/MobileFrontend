@@ -1,12 +1,25 @@
 import React from 'react';
 import {useState} from 'react';
 import { ImageBackground, StyleSheet, Text, View ,Image,Alert} from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { Pressable} from 'react-native';
+
 import Screen from '../components/Screen';
+import {connect} from 'react-redux';
+
 import AppTextInput from '../components/AppTextInput';
+import AppPasswordTextInput from '../components/AppPasswordTextInput';
 import AppButton from '../components/AppButton';
 import {authentication} from "../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-function LoginScreen({navigation}) {
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {db} from '../../firebase';
+import { collection, addDoc } from "firebase/firestore"; 
+import {setUserRedux} from '../redux/usersAction';
+import {getUser} from '../redux/usersReducer';
+import { bindActionCreators } from 'redux';
+
+
+function LoginScreen({navigation,props}) {
     const [email, setEmail]=useState();
     const [password, setPassword]=useState();
     const [user, setUser] = useState();
@@ -20,21 +33,34 @@ function LoginScreen({navigation}) {
           </ImageBackground>
         </View>
       );
+    
+    const dispatch = useDispatch();
 
     const SignIn =  async() => {
-    let user;
-    try{
-        user = await signInWithEmailAndPassword(authentication, email, password)
-    }catch(error) 
-    {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode,errorMessage);
-     };
-     console.log(user);
-  setUser(user);
-}
+        
+        let user;
+        
+        try{
+            user = await signInWithEmailAndPassword(authentication, email, password)
+        }catch(error)   
+        {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            Alert.alert(errorMessage);
+            console.log('login error')
+            return false;
+        };
+        console.log(user);
+        console.log('useremail', user.user.email);
+        setUser(user.user.email);
+     
+        dispatch(setUserRedux(user.user.email));
+        return true;
+    }
+    
 
+
+  
     return (
     
         <ImageBackground 
@@ -54,19 +80,36 @@ function LoginScreen({navigation}) {
             onChangeText = {text => setEmail(text)}
             style={styles.textInput}
         />
-        <AppTextInput 
+
+        <AppPasswordTextInput
             autoCapitalize = 'none'
             autoCorrect = {false}
-            keyboardType = "email-address"
+            keyboardType = "default"
             icon = "lock"
             placeholder = "Password"
             textContentType = "password"
-            secureTextEntry 
+            value={password}
+            enablesReturnKeyAutomatically
             onChangeText = {text => setPassword(text)}
             style={styles.textInput}
         />
+     
+        
+        
+        <AppButton title ="Login"
+         onPress={async() => {
+             
+        const res = await SignIn();
 
-          
+        if (res == true)
+        {
+        navigation.navigate('Friend');
+        } else {
+        navigation.navigate('Login');
+        }
+        }
+            
+        } />
         
         <AppButton title =  "Login" style={styles.loginbutton} onPress={
 
@@ -82,6 +125,7 @@ function LoginScreen({navigation}) {
         </ImageBackground>
   
   );
+ 
 };
 
 const styles = StyleSheet.create({
@@ -136,4 +180,16 @@ const styles = StyleSheet.create({
     }
 });
 
-export default LoginScreen;
+const mapStateToProps = (state) => {
+    const { users } = state
+    return { users }
+  };
+  
+
+  const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+      setUserRedux,
+    }, dispatch)
+  );
+
+export default  connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
