@@ -75,6 +75,11 @@ function RegisterScreen({navigation}) {
     return (
 
        
+        <ImageBackground 
+
+                   source = {require("../assets/WCP.jpg")}
+                   style = {styles.background}
+        >
             <View style={styles.view}>
         <Image style = {styles.logo} source = {require("../assets/Logo111.png")}/>
         <AppTextInput 
@@ -138,7 +143,7 @@ function RegisterScreen({navigation}) {
         
     {/* </Screen> */}
     </View>
- 
+ </ImageBackground>
   )
 };
 
