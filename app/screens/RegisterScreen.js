@@ -16,6 +16,7 @@ function RegisterScreen({navigation}) {
     const [password, setPassword]=useState();
     const [popUpVisible, setPopUpVisible] = useState(false);
     const [popUpText, setPopUpText] = useState();
+    const [phoneNumber, setPhoneNumber] = useState;
     // const [useracc,setUser] = useState();
     const RegisterUser = async(e) => {
         e.preventDefault();

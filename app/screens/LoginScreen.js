@@ -111,14 +111,14 @@ function LoginScreen({navigation,props}) {
             
         } />
         
-        <AppButton title =  "Login" style={styles.loginbutton} onPress={
+        {/* <AppButton title =  "Login" style={styles.loginbutton} onPress={
 
                  () => {
                  navigation.navigate("Friend");
              }
         
         }
-        />   
+        />    */}
         <Text style={styles.loginText} >Forgot Password?</Text>
         <Text onPress={() => navigation.navigate("Register")} style={styles.loginText} >Register</Text>
         </View>
