@@ -16,7 +16,7 @@ function RegisterScreen({navigation}) {
     const [password, setPassword]=useState();
     const [popUpVisible, setPopUpVisible] = useState(false);
     const [popUpText, setPopUpText] = useState();
-    const [phoneNumber, setPhoneNumber] = useState;
+    const [phoneNumber, setPhoneNumber] = useState();
     // const [useracc,setUser] = useState();
     const RegisterUser = async(e) => {
         e.preventDefault();
@@ -74,13 +74,8 @@ function RegisterScreen({navigation}) {
     }
     return (
 
-        <ImageBackground 
-                   
-                   source = {require("../assets/WCP.jpg")}
-                   style = {styles.background}
-        >
+       
             <View style={styles.view}>
-    {/* <Screen style = {styles.container}> */}
         <Image style = {styles.logo} source = {require("../assets/Logo111.png")}/>
         <AppTextInput 
             autoCapitalize = 'none'
@@ -116,12 +111,12 @@ function RegisterScreen({navigation}) {
         <AppTextInput
             autoCapitalize= 'none'
             autoCorrect = {false}
-            keyboardType = "phone_number"
+            keyboardType = "phone-pad"
             icon = "phone"
             placeholder = "Phone Number"
-            textContentType = "phoneNumber"
+            textContentType = "telephoneNumber"
             secureTextEntry 
-            onChangeText = {text => setPhonenumber(text)}
+            onChangeText = {text => setPhoneNumber(text)}
             style={styles.textInput}
         />
 
@@ -143,7 +138,7 @@ function RegisterScreen({navigation}) {
         
     {/* </Screen> */}
     </View>
-    </ImageBackground>
+ 
   )
 };
 
