@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert } from 'react-native';
-import { addDoc, query, collection, where, getDocs, orderBy,startAt,endAt} from 'firebase/firestore';
+import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot } from 'firebase/firestore';
 import {db} from '../../firebase';
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
@@ -18,6 +18,8 @@ import {getUser} from '../redux/usersReducer';
 
 
 
+
+
 export function FriendList({navigation}) {
 
   // temp state
@@ -29,10 +31,33 @@ export function FriendList({navigation}) {
     {id: 3, name: 'ghi'}
   ]);
   // ---end---
+  // onsnapshot test
+  // ---start---
+  const unsub = onSnapshot(doc(db, "users", "RVbUxQlKZefI6uTVOAjW"), (doc) => {
+    console.log("Current data: ", doc.data());
+  });
 
   const profileUser = useSelector(getUser);
+  const q = query(collection(db, "users"), where("username", "==", profileUser));
+
+  const onChangeDB = onSnapshot(q, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "added") {
+          console.log("New city: ", change.doc.data());
+      }
+      if (change.type === "modified") {
+          console.log("Modified city: ", change.doc.data());
+      }
+      if (change.type === "removed") {
+          console.log("Removed city: ", change.doc.data());
+      }
+    });
+  });
+
+  // ---end---
+
+
   const [friendList, setFriendList] = useState([]);
-  const userName = "xiaosb3@gmail.com";
   const userRef = collection(db,'users');
   const listFriend = async() => {
   const userQ = query(userRef, where("username","==",userName)); 
@@ -67,8 +92,9 @@ export function FriendList({navigation}) {
   }
   useEffect(() => 
   {
-    console.log("testz");
-      // listFriend()
+    // console.log("testz");
+    onChangeDB();
+    listFriend();
   }
   ,[])
 

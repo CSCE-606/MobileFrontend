@@ -82,7 +82,6 @@ function LoginScreen({navigation,props}) {
          onPress={async() => {
            
         const res = await SignIn();
-
         if (res == true)
         {
         navigation.navigate('Friend');
