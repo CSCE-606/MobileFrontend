@@ -20,6 +20,16 @@ import {getUser} from '../redux/usersReducer';
 
 export function FriendList({navigation}) {
 
+  // temp state
+  // ---start---
+
+  const [friendQueue, setFriendQueue] = useState([
+    {id: 1, name: 'abc'},
+    {id: 2, name: 'def'},
+    {id: 3, name: 'ghi'}
+  ]);
+  // ---end---
+
   const profileUser = useSelector(getUser);
   const [friendList, setFriendList] = useState([]);
   const userName = "xiaosb3@gmail.com";
@@ -62,15 +72,28 @@ export function FriendList({navigation}) {
   }
   ,[])
 
-  return(
+  handleAdd = (friendId) => {
+    const newList = friendQueue.filter(f => f.id !== friendId);
+    setFriendQueue(newList);
+    console.log('success add')
+  }
 
+  handleDelete = (friendId) => {
+    const newList = friendQueue.filter(f => f.id !== friendId);
+    setFriendQueue(newList);
+    console.log('success delete')
+  }
+
+  return(
+    
 <SafeAreaView style={styles.container}>
    
-    <NotificationPopup />
+    <NotificationPopup friendQueue={friendQueue} onAdd={handleAdd} onDelete={handleDelete} />
 
-  
+    
     <View>
       {console.log('fefe',friendList)}
+      
     
     {
    friendList.map((l, i) => 
