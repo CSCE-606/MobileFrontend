@@ -99,16 +99,15 @@ export function FriendList({navigation}) {
   }
   ,[])
 
-  handleAddition = (friendId) => {
-    const newList = friendQueue.filter(f => f.id !== friendId);
+  handleAddition = (data) => {
+    const newList = friendQueue.filter(f => f !== data);
     setFriendQueue(newList);
-    console.log('success add')
+
   }
 
-  handleDeletion = (friendId) => {
-    const newList = friendQueue.filter(f => f.id !== friendId);
+  handleDeletion = (data) => {
+    const newList = friendQueue.filter(f => f !== data);
     setFriendQueue(newList);
-    console.log('success delete')
   }
 
   return(
