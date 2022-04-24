@@ -109,7 +109,6 @@ export function FriendList({navigation}) {
     
 <SafeAreaView style={styles.container}>
    
-    <NotificationPopup friendQueue={friendQueue} onAdd={handleAdd} onDelete={handleDelete} />
 
     
     <View>
@@ -136,6 +135,10 @@ export function FriendList({navigation}) {
         navigation.navigate("AddFriend")
         }
       />
+    </View>
+
+    <View>
+    <NotificationPopup friendQueue={friendQueue} onAdd={handleAdd} onDelete={handleDelete} />
     </View>
        
         </SafeAreaView>
