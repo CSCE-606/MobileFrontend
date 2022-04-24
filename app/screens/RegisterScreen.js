@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
-import { StyleSheet,Image,Button, Alert} from 'react-native';
+import { ImageBackground,StyleSheet,Image,Button, Text, View,Alert} from 'react-native';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppPasswordTextInput from '../components/AppPasswordTextInput';
@@ -16,6 +16,7 @@ function RegisterScreen({navigation}) {
     const [password, setPassword]=useState();
     const [popUpVisible, setPopUpVisible] = useState(false);
     const [popUpText, setPopUpText] = useState();
+    const [phoneNumber, setPhoneNumber] = useState();
     // const [useracc,setUser] = useState();
     const RegisterUser = async(e) => {
         e.preventDefault();
@@ -72,8 +73,26 @@ function RegisterScreen({navigation}) {
             }
     }
     return (
-    <Screen style = {styles.container}>
-        <Image style = {styles.logo} source = {require("../assets/Ping_logo.png")}/>
+
+       
+        <ImageBackground 
+
+                   source = {require("../assets/WCP.jpg")}
+                   style = {styles.background}
+        >
+            <View style={styles.view}>
+        <Image style = {styles.logo} source = {require("../assets/Logo111.png")}/>
+        <AppTextInput 
+            autoCapitalize = 'none'
+            autoCorrect = {false}
+            keyboardType = "full-name"
+            icon = "account"
+            placeholder = "Full Name"
+            textContentType = "fullName"
+            secureTextEntry 
+            onChangeText = {text => setFullname(text)}
+            style={styles.textInput}
+        />
         <AppTextInput 
             autoCapitalize = 'none'
             autoCorrect = {false}
@@ -82,6 +101,7 @@ function RegisterScreen({navigation}) {
             placeholder = "Email"
             textContentType = "emailAddress"
             onChangeText = {text => setEmail(text)}
+            style={styles.textInput}
         />
         <AppPasswordTextInput 
             autoCapitalize = 'none'
@@ -91,12 +111,39 @@ function RegisterScreen({navigation}) {
             placeholder = "Password"
             textContentType = "password"
             onChangeText = {text => setPassword(text)}
+            style={styles.textInput}
         />
+        <AppTextInput
+            autoCapitalize= 'none'
+            autoCorrect = {false}
+            keyboardType = "phone-pad"
+            icon = "phone"
+            placeholder = "Phone Number"
+            textContentType = "telephoneNumber"
+            secureTextEntry 
+            onChangeText = {text => setPhoneNumber(text)}
+            style={styles.textInput}
+        />
+
+        <AppButton title =  "Register" style={styles.Registerbutton} onPress={
+
+                    () => {
+                    navigation.navigate("Login");
+                }
+
+        }
+        />
+
         <PopUp popUpVisible={popUpVisible}  setPopUpVisible={setPopUpVisible} popUpText={popUpText} />
         
-        <Button title =  "Register" onPress={RegisterUser}/>
+        {/* <Button title =  "Register" onPress={RegisterUser}/> */}
+
+        <Text style={styles.loginText} >Registered Already?</Text>
+        <Text onPress={() => navigation.navigate("Login")} style={styles.loginText} >Login</Text>
         
-    </Screen>
+    {/* </Screen> */}
+    </View>
+ </ImageBackground>
   )
 };
 
@@ -109,8 +156,45 @@ const styles = StyleSheet.create({
         height:230,
         
         alignSelf:'center',
+        marginTop: -150,
+        marginBottom:50,
+    },
+    textInput:{
+        width:250,
+        height:10,
+        
+        alignSelf:'center',
         marginTop: 10,
-        marginBottom:20,
+        marginBottom:10,
+    },
+    loginText: {
+        color:"#FFFFFF",
+        fontSize:16, 
+    },
+    view: {
+        flex: 1,
+        alignItems:'center',
+        justifyContent: "center"
+    },
+    background:{
+        flex:1,
+        justifyContent: "flex-end",
+        backgroundColor:"transparent",
+        alignItems: "center"
+    },
+    titleText: {
+        fontSize: 20,
+        fontWeight: "bold"
+    },
+    baseText: {
+        fontFamily: "Cochin"
+    },
+    loginbutton:{
+        color: "black",
+        backgroundColor:"black",
+       
+        flex: 1,
+        justifyContent: "center"
     },
     
 })
