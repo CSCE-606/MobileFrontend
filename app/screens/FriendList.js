@@ -18,8 +18,6 @@ import {getUser} from '../redux/usersReducer';
 
 
 
-
-
 export function FriendList({navigation}) {
 
   // temp state
@@ -33,24 +31,21 @@ export function FriendList({navigation}) {
   // ---end---
   // onsnapshot test
   // ---start---
-  const unsub = onSnapshot(doc(db, "users", "RVbUxQlKZefI6uTVOAjW"), (doc) => {
-    console.log("Current data: ", doc.data());
-  });
 
   const profileUser = useSelector(getUser);
   const q = query(collection(db, "users"), where("username", "==", profileUser));
-
+ 
   const onChangeDB = onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
           console.log("New city: ", change.doc.data());
       }
-      if (change.type === "modified") {
-          console.log("Modified city: ", change.doc.data());
-      }
-      if (change.type === "removed") {
-          console.log("Removed city: ", change.doc.data());
-      }
+      // if (change.type === "modified") {
+      //     console.log("Modified city: ", change.doc.data());
+      // }
+      // if (change.type === "removed") {
+      //     console.log("Removed city: ", change.doc.data());
+      // }
     });
   });
 
@@ -60,7 +55,7 @@ export function FriendList({navigation}) {
   const [friendList, setFriendList] = useState([]);
   const userRef = collection(db,'users');
   const listFriend = async() => {
-  const userQ = query(userRef, where("username","==",userName)); 
+  const userQ = query(userRef, where("username","==",profileUser)); 
   const querySnapShot = await getDocs(userQ);
   let friendList = [];
   querySnapShot.forEach((doc) => {
