@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert } from 'react-native';
 import { addDoc, query, collection, where, getDocs, orderBy,startAt,endAt} from 'firebase/firestore';
-import {db} from '../../firebase';
+import {db, doc} from '../../firebase';
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
@@ -19,6 +19,16 @@ import {getUser} from '../redux/usersReducer';
 
 
 export function FriendList({navigation}) {
+
+  // temp state
+  // ---start---
+
+  const [friendQueue, setFriendQueue] = useState([
+    {id: 1, name: 'abc'},
+    {id: 2, name: 'def'},
+    {id: 3, name: 'ghi'}
+  ]);
+  // ---end---
 
   const profileUser = useSelector(getUser);
   const [friendList, setFriendList] = useState([]);
@@ -62,15 +72,28 @@ export function FriendList({navigation}) {
   }
   ,[])
 
-  return(
+  handleAdd = (friendId) => {
+    const newList = friendQueue.filter(f => f.id !== friendId);
+    setFriendQueue(newList);
+    console.log('success add')
+  }
 
+  handleDelete = (friendId) => {
+    const newList = friendQueue.filter(f => f.id !== friendId);
+    setFriendQueue(newList);
+    console.log('success delete')
+  }
+
+  return(
+    
 <SafeAreaView style={styles.container}>
    
-    <NotificationPopup />
+    <NotificationPopup friendQueue={friendQueue} onAdd={handleAdd} onDelete={handleDelete} />
 
-  
+    
     <View>
       {console.log('fefe',friendList)}
+      
     
     {
    friendList.map((l, i) => 
@@ -93,12 +116,7 @@ export function FriendList({navigation}) {
         }
       />
     </View>
-
-
-            
-
-            
-            
+       
         </SafeAreaView>
 
     );
@@ -125,5 +143,29 @@ const styles = StyleSheet.create({
       borderBottomWidth: StyleSheet.hairlineWidth,
     },
   });
-  
+
+
+const Listing = [
+  {
+    id: "Amy",
+    Email: "aaa111@gmail.com",
+    PhoneNumber: 8888888888,
+  },
+  {
+    id: "Allen",
+    Email: "ccc333@gmail.com",
+    PhoneNumber: 6666666666,
+  },
+  {
+    id: "Alex",
+    Email: "bbb222@gmail.com",
+    PhoneNumbe: 7777777777,
+  },
+  {
+    id: "Andy",
+    Email: "ddd444@gmail.com",
+    PhoneNumbe: 5555555555,
+  }
+]
+
 export default FriendList;
