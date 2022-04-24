@@ -17,6 +17,8 @@ function RegisterScreen({navigation}) {
     const [popUpVisible, setPopUpVisible] = useState(false);
     const [popUpText, setPopUpText] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
+    const [fullName, setFullName] = useState();
+
     // const [useracc,setUser] = useState();
     const RegisterUser = async(e) => {
         e.preventDefault();
@@ -85,12 +87,12 @@ function RegisterScreen({navigation}) {
         <AppTextInput 
             autoCapitalize = 'none'
             autoCorrect = {false}
-            keyboardType = "full-name"
+            keyboardType = "default"
             icon = "account"
             placeholder = "Full Name"
-            textContentType = "fullName"
+            textContentType = "name"
             secureTextEntry 
-            onChangeText = {text => setFullname(text)}
+            onChangeText = {text => setFullName(text)}
             style={styles.textInput}
         />
         <AppTextInput 
@@ -125,13 +127,7 @@ function RegisterScreen({navigation}) {
             style={styles.textInput}
         />
 
-        <AppButton title =  "Register" style={styles.Registerbutton} onPress={
-
-                    () => {
-                    navigation.navigate("Login");
-                }
-
-        }
+        <AppButton title =  "Register" style={styles.Registerbutton} onPress={RegisterUser}
         />
 
         <PopUp popUpVisible={popUpVisible}  setPopUpVisible={setPopUpVisible} popUpText={popUpText} />
