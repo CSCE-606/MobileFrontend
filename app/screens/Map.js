@@ -4,8 +4,8 @@ import { View, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 const App = () => {
   const [mapRegion, setmapRegion] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
+    latitude: 30.616701789744717,
+    longitude:  -96.338583,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });

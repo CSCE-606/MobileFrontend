@@ -1,67 +1,99 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Button, SafeAreaView, Alert } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert } from 'react-native';
+import { addDoc, query, collection, where, getDocs, orderBy,startAt,endAt} from 'firebase/firestore';
+import {db} from '../../firebase';
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
 import Screen from '../components/Screen';
+import NotificationPopup from '../components/NotificationPopup';
+
+import { Notification } from '../api/Notification';
+
+import {connect} from 'react-redux';
+import { useSelector } from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {createStructuredSelector} from 'reselect';
+import {getUser} from '../redux/usersReducer';
+
+
+
 export function FriendList({navigation}) {
-    return(
 
-        <SafeAreaView style={styles.container}>
-            <View style={styles.listContainer} >
-                <View style={styles.listElement}>
-                    <ListItem 
-                        title = "Friend1"
-                        image = {require("../assets/fox.png")}
-                    />
+  const profileUser = useSelector(getUser);
+  const [friendList, setFriendList] = useState([]);
+  const userName = "xiaosb3@gmail.com";
+  const userRef = collection(db,'users');
+  const listFriend = async() => {
+  const userQ = query(userRef, where("username","==",userName)); 
+  const querySnapShot = await getDocs(userQ);
+  let friendList = [];
+  querySnapShot.forEach((doc) => {
+    friendList = doc.data().friendList;
+    
+  })
+  console.log('friendlist', friendList);
+  const pushTokenQ = query(userRef, where("username","in",friendList));
+  let tokenSnapShot 
+  try{
+    tokenSnapShot  = await getDocs(pushTokenQ);
+  }catch(err)
+  {
+    cosnole.log(err);
+  }
+  const friends = []
+  tokenSnapShot.forEach((doc) => {
+    
+    const res = doc.data();
+    const username = res.username;
+    const pushToken = res.pushToken;
+    friends.push({
+      username,
+      pushToken
+    })
+  })
 
-                    <View style={styles.buttonContainer}>
-                        <Button title="Button1" onPress={() => {createThreeButtonAlert}}/>
-                    </View>
-                </View>
+  setFriendList(friends);
+  }
+  useEffect(() => 
+  {
+    console.log("testz");
+      // listFriend()
+  }
+  ,[])
 
-                <View style={styles.listElement}>
-                    <ListItem 
-                        title = "Friend2"
-                        image = {require("../assets/fox.png")}
-                    />
-                    <View style={styles.buttonContainer}>
-                        <Button title="Button2"  />
-                    </View>
-                </View>
+  return(
 
-                <View style={styles.listElement}>
-                    <ListItem 
-                        title = "Friend3"
-                        image = {require("../assets/fox.png")}
-                    />
-                    <View style={styles.buttonContainer}>
-                        <Button title="Button3"  />
-                    </View>
-                </View>
+<SafeAreaView style={styles.container}>
+   
+    <NotificationPopup />
 
-                <View style={styles.listElement}>
-                    <ListItem 
-                        title = "Friend4"
-                        image = {require("../assets/fox.png")}
-                    />
-                    <View style={styles.buttonContainer}>
-                        <Button title="Button4"  />
-                    </View>
-                </View>
+  
+    <View>
+      {console.log('fefe',friendList)}
+    
+    {
+   friendList.map((l, i) => 
+    
+        
+   (<ListItem
+        key={i}
+    
+        title={l.username}
+        pushToken={l.pushToken}
+        image = {require("../assets/fox.png")}
+      />
+    )
+)
+   } 
+      <Button
+        title="Add Friend"
+        onPress={() => 
+        navigation.navigate("AddFriend")
+        }
+      />
+    </View>
 
-                <View style={styles.listElement}>
-                    <ListItem 
-                        title = "Friend5"
-                        image = {require("../assets/fox.png")}
-                        
-                    />
-                    <View style={styles.buttonContainer}>
-                        <Button title="Button5"  onPress={() => {navigation.navigate("Notification")}}/>
-                    </View>
-                </View>
-
-            </View>
 
             
 
@@ -73,69 +105,25 @@ export function FriendList({navigation}) {
 };
 
 
-const createThreeButtonAlert = () =>
-Alert.alert(
-  "I need SpongeBob!",
-  "I need SpongeBob",
-  [
-    {
-      text: "Ask me later",
-      onPress: () => console.log("Ask me later pressed")
-    },
-    {
-      text: "Cancel",
-      onPress: () => console.log("Cancel Pressed"),
-      style: "cancel"
-    },
-    { text: "OK", onPress: () => console.log("OK Pressed") }
-  ]
-);
 const styles = StyleSheet.create({
-    buttonContainer: {
-        
-        
-       
-        borderRadius: 10,
-        shadowColor: "grey",
-        shadowOffset: {width: 10, height: 10},
-        shadowOpacity: 1,
-       
-    },
-
     container: {
-        flex: 1,
-        backgroundColor: "#f9e955",
-        alignItems: "center",
-        justifyContent: "center",
+      flex: 1,
+      justifyContent: 'center',
+      marginHorizontal: 16,
     },
-
-    listElement: {
-        flexDirection: "row",
-        padding:90,
+    title: {
+      textAlign: 'center',
+      marginVertical: 8,
     },
-
-    listContainer: {
-        flex: 0.5,
-        backgroundColor: "#f9e955",
-        right: 100,
-        justifyContent: "space-evenly",
-        padding : 10,
+    fixToText: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
-
-    image: {
-        width: 70,
-        height: 70,
-        borderRadius: 35,
-
+    separator: {
+      marginVertical: 8,
+      borderBottomColor: '#737373',
+      borderBottomWidth: StyleSheet.hairlineWidth,
     },
-
-    textElement: {
-       
-    },
-
-    userContainer: {
-        marginVertical: 40,
-
-    }
-})
+  });
+  
 export default FriendList;
