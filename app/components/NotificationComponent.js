@@ -8,8 +8,9 @@ export function NotificationComponent(props) {
     return (
         <View>
             <Text>
-                'friend name' Request
-            </Text>          
+                {props.data} 
+            </Text> 
+            <Text>send you a friend request</Text>         
             <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity onPress={() => props.onAdd(props.data.id)}>
                     <Icon name='check' color='green' />
@@ -18,7 +19,7 @@ export function NotificationComponent(props) {
                     <Icon name='close' color='red' style={{ paddingLeft: 5 }}/>
                 </TouchableOpacity>
             </View>
-
+            <Text></Text>
         </View>
     )
     

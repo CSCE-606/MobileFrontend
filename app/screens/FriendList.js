@@ -23,11 +23,7 @@ export function FriendList({navigation}) {
   // temp state
   // ---start---
 
-  const [friendQueue, setFriendQueue] = useState([
-    {id: 1, name: 'abc'},
-    {id: 2, name: 'def'},
-    {id: 3, name: 'ghi'}
-  ]);
+  const [friendQueue, setFriendQueue] = useState([]);
   // ---end---
   // onsnapshot test
   // ---start---
@@ -58,10 +54,15 @@ export function FriendList({navigation}) {
   const userQ = query(userRef, where("username","==",profileUser)); 
   const querySnapShot = await getDocs(userQ);
   let friendList = [];
+  let friendQueue = [];
+
   querySnapShot.forEach((doc) => {
     friendList = doc.data().friendList;
-    
+    friendQueue = doc.data().friendRequests;
   })
+
+  setFriendQueue(friendQueue);  
+
   console.log('friendlist', friendList);
   const pushTokenQ = query(userRef, where("username","in",friendList));
   let tokenSnapShot 
@@ -71,19 +72,24 @@ export function FriendList({navigation}) {
   {
     cosnole.log(err);
   }
+
+  console.log(pushTokenQ, "this is pushTokenQ")
   const friends = []
   tokenSnapShot.forEach((doc) => {
     
     const res = doc.data();
     const username = res.username;
     const pushToken = res.pushToken;
+    
     friends.push({
       username,
       pushToken
     })
+
   })
 
   setFriendList(friends);
+
   }
   useEffect(() => 
   {
@@ -93,13 +99,13 @@ export function FriendList({navigation}) {
   }
   ,[])
 
-  handleAdd = (friendId) => {
+  handleAddition = (friendId) => {
     const newList = friendQueue.filter(f => f.id !== friendId);
     setFriendQueue(newList);
     console.log('success add')
   }
 
-  handleDelete = (friendId) => {
+  handleDeletion = (friendId) => {
     const newList = friendQueue.filter(f => f.id !== friendId);
     setFriendQueue(newList);
     console.log('success delete')
@@ -138,7 +144,7 @@ export function FriendList({navigation}) {
     </View>
 
     <View>
-    <NotificationPopup friendQueue={friendQueue} onAdd={handleAdd} onDelete={handleDelete} />
+    <NotificationPopup friendQueue={friendQueue} onAdd={handleAddition} onDelete={handleDeletion} />
     </View>
        
         </SafeAreaView>
