@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert } from 'react-native';
 import { addDoc, query, collection, where, getDocs, orderBy,startAt,endAt} from 'firebase/firestore';
-import {db} from '../../firebase';
+import {db, doc} from '../../firebase';
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import ListItem from '../components/ListItem';
