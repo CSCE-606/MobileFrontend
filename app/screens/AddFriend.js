@@ -12,20 +12,18 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import { useSelector } from 'react-redux';
 import {getUser} from '../redux/usersReducer';
 
-function AddFriend({navigation}) {
+function AddFriend() {
     const [username, setUserName]= useState();
     const [PotentialFriendList,setPotentialFriendList] = useState([]);
     const [displayFriendList, updateDisplay] = useState(false);
     const profileUser = useSelector(getUser);
     const userRef = collection(db,'users');
-    const addFriend = async (username) => {
-      console.log("user namez", username.email);  
-      const q1 = query(userRef);
-    }
+
+
+
+
     const searchUser = async () => {
       const q1 = query(userRef, orderBy('username'), startAt(username), endAt(username+"\uf8ff"));
-      // const q2 = query(userRef, startAt(username.toLowerCase()), endAt(username.toLowerCase()+"\uf8ff"));
-      // const q3 = query(userRef, startAt(username), endAt(username+"\uf8ff"));
 
       const PotentialFriends= await getDocs(q1);
       let tempPotentialFriendList= [];
@@ -61,7 +59,7 @@ function AddFriend({navigation}) {
         (<AddFriendItem
              key={i}
              title={l.username}
-             onPress={addFriend(l.username)}
+             username={l.username}
            />
          )
      )

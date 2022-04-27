@@ -103,9 +103,9 @@ function LoginScreen({navigation,props}) {
 
         if (res == true)
         {
-        navigation.navigate('Friend');
-        } else {
         navigation.navigate('Home');
+        } else {
+        navigation.navigate('Login');
         }
         }
             

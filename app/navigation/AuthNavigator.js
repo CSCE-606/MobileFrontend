@@ -22,17 +22,18 @@ function Home() {
 
 const AuthNavigator = () => (
     <Stack.Navigator>
-          <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{ tabBarLabel: 'Home!' }}
-        />
+          
         <Stack.Screen name = "Welcome" component  = {WelcomeScreen} options = {{headerShown: false}}/>
         <Stack.Screen name = "Friend" component  = {FriendList} />
         <Stack.Screen name = "Login" component  = {LoginScreen} />
         <Stack.Screen name = "Register" component  = {RegisterScreen} />
         <Stack.Screen name = "Notification" component  = {Notification} />
         <Stack.Screen name = "AddFriend" component  = {AddFriend} />
+        <Tab.Screen
+          name="Home"
+          component={Home}
+          options={{ tabBarLabel: 'Home!' }}
+        />
     </Stack.Navigator>
 );
 
