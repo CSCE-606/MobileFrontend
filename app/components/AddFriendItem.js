@@ -4,15 +4,69 @@ import AppText from './AppText';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {getUser} from '../redux/usersReducer';
 import { useSelector } from 'react-redux';
-
+import { addDoc, query, collection, where, getDocs, updateDoc, arrayUnion, arrayRemove, doc} from 'firebase/firestore';
+import {db} from '../../firebase';
 function AddFriendItem({ title, image,username }) {
-    // const [popup,Setpopup]=useState(false)
+    const [popup,Setpopup]=useState(false)
     const [displayAlert, showAlert] = useState(false);
     const profileUser = useSelector(getUser);
-    const showUsername = () =>{
-        console.log("efew",username);
-        console.log("efprofileuser", profileUser);
-        const userRef = doc(db,'users', username);
+    const userRef = collection(db,'users');
+
+
+    const showUsername = async() =>{
+
+        // read profileUser Docs and update profileUser friendRequests
+
+        var friendRequest=[]
+        var newFriendRequest=[]
+        friendRequest.push(username)
+        const snapshot = query(userRef,where('username', '==', profileUser));
+        const userDoc=await getDocs(snapshot);
+        let id;
+
+
+        userDoc.forEach((doc) => {
+        
+        res=doc.data();
+        id = doc.id
+
+        console.log('sb',id)
+        console.log('cao',res.friendRequests)
+
+        newFriendRequest=friendRequest.concat(res.friendRequests);
+
+        console.log('tmd',newFriendRequest)
+
+          });
+
+        
+        
+        
+        const docRef = doc(db, "users", id);
+        await updateDoc(docRef,{
+            friendRequests: newFriendRequest
+          })
+        
+        // const docSnap = await getDoc(docRef);
+        //   if (docSnap.exists()) {
+            
+        //     const user = docSnap.data();
+            
+        //     console.log('tnnd',user.friendRequests);
+        //   } else {
+        //     console.log("No such document!");
+        //   }
+
+        
+        // console.log('tnnd',Res.friendRequests)
+        
+        
+        // const doc = await cityRef.get();
+        // console.log(userRef)
+
+
+
+
         // let updateFriendRequestQ = query(userRef, )
         // try {
         //     let docRef;
@@ -40,7 +94,7 @@ function AddFriendItem({ title, image,username }) {
             </View>
             <AppText style={styles.title}>{title}</AppText>
             <Button  title ="Add Friend"
-                     onPress={showUsername}
+                     onPress={() => showUsername()}
             />
 
             <View>
