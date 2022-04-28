@@ -7,6 +7,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import Notification from "../api/Notification";
 import AddFriend from "../screens/AddFriend";
+import Map from "../screens/Map";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -16,6 +17,7 @@ function Home() {
       <Tab.Navigator>
                 <Tab.Screen name = "Friend" component  = {FriendList} />
         <Tab.Screen name = "Add Friend" component  = {AddFriend} />
+        <Tab.Screen name = "Map" component  = {Map} />
       </Tab.Navigator>
     );
   }
