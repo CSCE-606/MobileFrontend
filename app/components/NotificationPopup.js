@@ -10,7 +10,7 @@ import { Badge } from 'react-native-elements';
 function NotificationPopup (props) {
     const [show, setShow] = useState(false);
     return(
-        <View style={{top: -300, left: 300}}>
+        <View>
             <TouchableOpacity>
                 <Icon name='bell' size={20} color="blue" onPress={() => {setShow(true)}} />    
             </TouchableOpacity>

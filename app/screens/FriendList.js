@@ -17,7 +17,6 @@ import {createStructuredSelector} from 'reselect';
 import {getUser} from '../redux/usersReducer';
 
 
-
 export function FriendList({navigation}) {
 
   // temp state
@@ -46,9 +45,7 @@ export function FriendList({navigation}) {
       // }
     });
   });
-
   // ---end---
-
 
   const [friendList, setFriendList] = useState([]);
   const userRef = collection(db,'users');
@@ -141,10 +138,9 @@ export function FriendList({navigation}) {
 
     
     <View>
-      {//console.log('fefe',friendList)
-      }
       
-    
+      <View style={{left:300, top:-70, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handleDeletion} /></View>
+    <ScrollView style={{top:-10, width:360, height:520}}>
     {
    friendList.map((l, i) => 
     
@@ -158,7 +154,8 @@ export function FriendList({navigation}) {
       />
     )
 )
-   } 
+   }
+   </ScrollView> 
       <Button
         title="Add Friend"
         onPress={() => 
@@ -168,7 +165,7 @@ export function FriendList({navigation}) {
     </View>
 
     <View>
-    <NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handleDeletion} />
+    
     </View>
        
         </SafeAreaView>
