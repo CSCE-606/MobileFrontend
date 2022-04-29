@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert } from 'react-native';
-import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
+import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert, Switch } from 'react-native';
+import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot } from 'firebase/firestore';
 import {db} from '../../firebase';
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
@@ -9,7 +9,7 @@ import Screen from '../components/Screen';
 import NotificationPopup from '../components/NotificationPopup';
 
 import { Notification } from '../api/Notification';
-
+import {setUserRedux} from '../redux/usersAction';
 import {connect} from 'react-redux';
 import { useSelector } from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -17,12 +17,18 @@ import {createStructuredSelector} from 'reselect';
 import {getUser} from '../redux/usersReducer';
 
 
-export function FriendList({navigation}) {
+function FriendList({navigation}, props) {
 
   // temp state
   // ---start---
 
   const [friendRequest, setFriendRequest] = useState([]);
+  const [friendList, setFriendList] = useState([]);
+  const [isSwitchEnabled, toggleSwitch] = useState(false)
+  // const [App, setAppList] = useState([]);
+  const userRef = collection(db,'users');
+
+  const [userId, setUserId] = useState();
   // ---end---
 
   // onsnapshot test
@@ -47,10 +53,7 @@ export function FriendList({navigation}) {
   });
   // ---end---
 
-  const [friendList, setFriendList] = useState([]);
-  const userRef = collection(db,'users');
-
-  const [userId, setUserId] = useState();
+ 
 
   const listFriend = async() => {
     const userQ = query(userRef, where("username","==",profileUser)); 
@@ -91,21 +94,22 @@ export function FriendList({navigation}) {
         pushToken
       })
     })
+    setFriendList(friends);
+  };
 
-    //setFriendList(friends);
-    setFriendList(friendLists);
-  }
+  
 
 
   useEffect(() => 
   {
     // console.log("testz");
-    onChangeDB();
     listFriend();
+    console.log('frinedz list', friendList);
+    onChangeDB();
   }
-  ,[])
+  ,[props])
 
-  handleAddition = async(data) => {
+  const handleAddition = async(data) => {
     const newList = friendRequest.filter(f => f !== data);
     const newFriendList = [...friendList];
     setFriendRequest(newList);
@@ -121,7 +125,7 @@ export function FriendList({navigation}) {
     })
   }
 
-  handleDeletion = async(data) => {
+  const handleDeletion = async(data) => {
     const newList = friendRequest.filter(f => f !== data);
     setFriendRequest(newList);
 
@@ -138,14 +142,17 @@ export function FriendList({navigation}) {
 
     
     <View>
-      
-      <View style={{left:300, top:-70, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handleDeletion} /></View>
-    <ScrollView style={{top:-10, width:360, height:520}}>
+    <View style={{left:320, bottom:700, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handleDeletion} /></View>
+    
+   <ScrollView style={{top:-10, width:360, height:520}}>
+   
     {
    friendList.map((l, i) => 
     
         
-   (<ListItem
+   (
+   
+   <ListItem
         key={i}
     
         title={l.username}
@@ -161,17 +168,20 @@ export function FriendList({navigation}) {
         onPress={() => 
         navigation.navigate("AddFriend")
         }
-      />
+      ></Button>
+
     </View>
 
-    <View>
-    
-    </View>
-       
+
+    {/* <View>
+    <NotificationPopup friendQueue={friendQueue} onAdd={handleAdd} onDelete={handleDelete} />
+    </View> */}
+
         </SafeAreaView>
 
     );
 };
+
 
 
 const styles = StyleSheet.create({
@@ -179,6 +189,8 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       marginHorizontal: 16,
+      flexDirection: "row",
+      padding: 15,
     },
     title: {
       textAlign: 'center',
@@ -192,6 +204,11 @@ const styles = StyleSheet.create({
       marginVertical: 8,
       borderBottomColor: '#737373',
       borderBottomWidth: StyleSheet.hairlineWidth,
+    },
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center"
     },
   });
 
@@ -216,7 +233,19 @@ const Listing = [
     id: "Andy",
     Email: "ddd444@gmail.com",
     PhoneNumbe: 5555555555,
-  }
-]
+  },
+];
 
-export default FriendList;
+const mapStateToProps = (state) => {
+  const { users } = state
+  return { users }
+};
+
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    setUserRedux,
+  }, dispatch)
+);
+
+export default  connect(mapStateToProps, mapDispatchToProps)(FriendList);

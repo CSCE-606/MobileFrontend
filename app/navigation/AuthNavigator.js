@@ -16,23 +16,24 @@ const Stack = createStackNavigator();
 function Home() {
     return (
       <Tab.Navigator>
-        <Tab.Screen name = "Friend" component={FriendList} />        
-        <Tab.Screen name = "Add Friend" component={AddFriend} />
-        <Tab.Screen name = "Profile" component={Profile} />
+        <Tab.Screen name = "Friend" component={FriendList} options={{headerShown: false } }/>        
+        <Tab.Screen name = "Add Friend" component={AddFriend} options={{headerShown: false } }/>
+        <Tab.Screen name = "Profile" component={Profile} options={{headerShown: false } }/>
       </Tab.Navigator>
     );
   }
 
 const AuthNavigator = () => (
     <Stack.Navigator>
-         <Stack.Screen name = "Profile" component  = {Profile} />
+      
         <Stack.Screen name = "Welcome" component  = {WelcomeScreen} options = {{headerShown: false}}/>
+        <Stack.Screen name = "Profile" component  = {Profile} />
         <Stack.Screen name = "Friend" component  = {FriendList} />
         <Stack.Screen name = "Login" component  = {LoginScreen} />
         <Tab.Screen
           name="Home"
           component={Home}
-          options={{ tabBarLabel: 'Home!' }}
+          options={{headerShown: false } }
         />
         <Stack.Screen name = "Register" component  = {RegisterScreen} />
         <Stack.Screen name = "Notification" component  = {Notification} />

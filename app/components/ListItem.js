@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, StyleSheet, Text, Image, Button} from 'react-native';
-
+import React, {useState} from 'react';
+import { View, StyleSheet, Text, Image, Button, Switch} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import AppText from './AppText';
 
 function ListItem({ title, image, pushToken }) {
-   
+  const [isSwitchEnabled, toggleSwitch] = useState(false)
     const sendPushToken = () => {
         console.log(pushToken);
         try{
@@ -35,11 +35,22 @@ function ListItem({ title, image, pushToken }) {
 
     return(
         <View style={styles.container}>
-            <View>
+          <View>
+             <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={isSwitchEnabled ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch}
+        value={isSwitchEnabled}
+       ></Switch>
+       {console.log("username",title)}
+        
                 <Image style={styles.image} source={image} />
+                <AppText style={styles.title}>{title}</AppText>
             </View>
-            <Button title={'Send Notification'} onPress={sendPushToken}></Button>
-            <AppText style={styles.title}>{title}</AppText>
+
+            <Icon name='bell' size={20} color="blue" onPress={sendPushToken} />    
+          
         </View>
     );
 }

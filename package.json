@@ -29,7 +29,7 @@
     "expo-permissions": "~13.1.0",
     "expo-server-sdk": "^3.6.0",
     "expo-status-bar": "~1.2.0",
-    "expo-updates": "~0.11.6",
+    "expo-updates": "~0.11.7",
     "firebase": "^9.6.10",
     "firebase-admin": "^10.0.2",
     "native-base": "^3.3.7",
@@ -52,8 +52,7 @@
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
     "registry": "^0.3.0",
-    "uuid": "^8.3.2",
-    "uuidv4": "^6.2.13",
+    "stream-chat-react-native": "^4.3.1",
     "zlib": "^1.0.5"
   },
   "devDependencies": {
