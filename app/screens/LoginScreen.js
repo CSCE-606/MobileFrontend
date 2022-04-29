@@ -23,21 +23,11 @@ function LoginScreen({navigation,props}) {
     const [email, setEmail]=useState();
     const [password, setPassword]=useState();
     const [user, setUser] = useState();
-    const image = { uri: "file:///Users/wuyue/Desktop/%E5%B0%8F%E9%83%8E%E7%9A%84Photo/pexels-marcus-aurelius-9789300.jpg" };
-    
 
-
-    const App = () => (
-        <View style={styles.container}>
-          <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-          </ImageBackground>
-        </View>
-      );
     
     const dispatch = useDispatch();
 
-    const SignIn =  async() => {
-        
+    const SignIn = async() => {
         let user;
         
         try{
@@ -97,9 +87,7 @@ function LoginScreen({navigation,props}) {
         
         
         <AppButton title ="Login"
-         onPress={async() => {
-           
-        const res = await SignIn();
+         onPress={async() => {  const res = await SignIn();
 
         if (res == true)
         {
@@ -112,7 +100,6 @@ function LoginScreen({navigation,props}) {
         } />
         
         {/* <AppButton title =  "Login" style={styles.loginbutton} onPress={
-
                  () => {
                  navigation.navigate("Friend");
              }
@@ -127,7 +114,6 @@ function LoginScreen({navigation,props}) {
   );
  
 };
-
 const styles = StyleSheet.create({
     container: {
         padding:10
