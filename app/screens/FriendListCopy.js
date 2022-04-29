@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert, Switch } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert } from 'react-native';
 import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot } from 'firebase/firestore';
 import {db} from '../../firebase';
 import AppText from "../components/AppText";
@@ -9,7 +9,7 @@ import Screen from '../components/Screen';
 import NotificationPopup from '../components/NotificationPopup';
 
 import { Notification } from '../api/Notification';
-import {setUserRedux} from '../redux/usersAction';
+
 import {connect} from 'react-redux';
 import { useSelector } from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -17,43 +17,11 @@ import {createStructuredSelector} from 'reselect';
 import {getUser} from '../redux/usersReducer';
 
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const Tab = createBottomTabNavigator();
-
-function MyTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="All" component={LoginScreen} />
-      <Tab.Screen name="Search Friends" component={WelcomeScreen} />
-    </Tab.Navigator>
-  );
-}
-
-
-function FriendList(props, {navigation}) {
+export function FriendList(props, {navigation}) {
 
   // temp state
   // ---start---
-
-
-
-// const Stack = createStackNavigator();
-// const StackNavigator = () => (
-//   <Stack.Navigator>
-//     <Stack.Screen name="Tweets" component={Tweets} />
-//     <Stack.Screen name="TweetDetails" component={TweetDetails} />
-//   </Stack.Navigator>
-
-
-// const Tab = createBottomTabNavigator();
-
-// const TabNavigator = () => (
-//   <Tab.Navigator>
-//     <Tab.Screen name="All" component={Tweets} />
-//     <Tab.Screen name="Search Friend" component={Account} />
-//   </Tab.Navigator>
-// )
 
   const [friendQueue, setFriendQueue] = useState([
     {id: 1, name: 'abc'},
@@ -85,8 +53,6 @@ function FriendList(props, {navigation}) {
 
 
   const [friendList, setFriendList] = useState([]);
-  const [isSwitchEnabled, toggleSwitch] = useState(false)
-  // const [App, setAppList] = useState([]);
   const userRef = collection(db,'users');
   const listFriend = async() => {
     console.log(profileUser);
@@ -120,6 +86,7 @@ function FriendList(props, {navigation}) {
     console.log('fewfwef',friends);
   })
   console.log("testfriend",friends);
+
   setFriendList(friends);
   }
   useEffect(() => 
@@ -166,95 +133,18 @@ function FriendList(props, {navigation}) {
     )
 )
    } 
-      {/* <Button
+      <Button
         title="Add Friend"
         onPress={() => 
         navigation.navigate("AddFriend")
         }
-      /> */}
-
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isSwitchEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isSwitchEnabled}
       />
-
-      <View
-        style={{
-          // // borderBottomColor: 'black',
-          // borderBottomWidth: 1,
-          flex:0.25
-        }}
-      />
-
-      <ListItem
-        image={require("../assets/fox.png")}
-        title="Cinderella"
-      />
-
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isSwitchEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isSwitchEnabled}
-      />
-
-      <View
-        style={{
-          // borderBottomColor: 'black',
-          // borderBottomWidth: 1,
-          flex:0.25
-        }}
-      />
-
-      <ListItem
-        image={require("../assets/fox.png")}
-        title="Belle"
-      />
-
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isSwitchEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isSwitchEnabled}
-      />  
-
-      <View
-        style={{
-          // borderBottomColor: 'black',
-          // borderBottomWidth: 1,
-          flex:0.25
-        }}
-
-      />
-
-
-      
-      <ListItem
-        image={require("../assets/fox.png")}
-        title="Snow White"
-      />
-
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isSwitchEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isSwitchEnabled}
-      />  
-
-
     </View>
 
-
-    {/* <View>
+    <View>
     <NotificationPopup friendQueue={friendQueue} onAdd={handleAdd} onDelete={handleDelete} />
-    </View> */}
-
+    </View>
+       
         </SafeAreaView>
 
     );
@@ -266,8 +156,6 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       marginHorizontal: 16,
-      flexDirection: "row",
-      padding: 15,
     },
     title: {
       textAlign: 'center',
@@ -281,11 +169,6 @@ const styles = StyleSheet.create({
       marginVertical: 8,
       borderBottomColor: '#737373',
       borderBottomWidth: StyleSheet.hairlineWidth,
-    },
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
     },
   });
 
@@ -310,19 +193,7 @@ const Listing = [
     id: "Andy",
     Email: "ddd444@gmail.com",
     PhoneNumbe: 5555555555,
-  },
-];
+  }
+]
 
-const mapStateToProps = (state) => {
-  const { users } = state
-  return { users }
-};
-
-
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    setUserRedux,
-  }, dispatch)
-);
-
-export default  connect(mapStateToProps, mapDispatchToProps)(FriendList);
+export default FriendList;

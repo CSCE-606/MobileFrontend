@@ -13,6 +13,7 @@
   "dependencies": {
     "@eva-design/eva": "^2.1.1",
     "@react-native-firebase/app": "^14.7.0",
+    "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "@react-navigation/stack": "^6.1.1",
@@ -26,7 +27,7 @@
     "expo-permissions": "~13.1.0",
     "expo-server-sdk": "^3.6.0",
     "expo-status-bar": "~1.2.0",
-    "expo-updates": "~0.11.6",
+    "expo-updates": "~0.11.7",
     "firebase": "^9.6.10",
     "firebase-admin": "^10.0.2",
     "native-base": "^3.3.7",
@@ -40,14 +41,15 @@
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-svg": "12.1.1",
-    "react-native-video": "^5.2.0",
     "react-native-tip": "^0.0.18",
+    "react-native-video": "^5.2.0",
     "react-native-web": "0.17.1",
     "react-native-webview": "11.15.0",
     "react-redux": "^7.2.8",
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
     "registry": "^0.3.0",
+    "stream-chat-react-native": "^4.3.1",
     "zlib": "^1.0.5"
   },
   "devDependencies": {
