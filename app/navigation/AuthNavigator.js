@@ -9,6 +9,7 @@ import Notification from "../api/Notification";
 import AddFriend from "../screens/AddFriend";
 import Profile from '../screens/ProfileScreen';
 
+import Map from "../screens/Map";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -19,6 +20,7 @@ function Home() {
         <Tab.Screen name = "Friend" component={FriendList} options={{headerShown: false } }/>        
         <Tab.Screen name = "Add Friend" component={AddFriend} options={{headerShown: false } }/>
         <Tab.Screen name = "Profile" component={Profile} options={{headerShown: false } }/>
+        <Tab.Screen name = "Map" component  = {Map} options={{headerShown: false }}/>
       </Tab.Navigator>
     );
   }
