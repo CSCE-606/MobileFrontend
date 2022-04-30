@@ -151,6 +151,7 @@ export function FriendList({navigation}) {
               (<ListItem
                 key={i}
                 title={l.username}
+                name={l.name}
                 pushToken={l.pushToken}
                 onDelete={handleDeletion}
                 image = {require("../assets/fox.png")}
