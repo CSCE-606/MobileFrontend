@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, Button, Switch} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AppText from './AppText';
 
-function ListItem({ title, image, pushToken }) {
+function ListItem({ title, image, pushToken, onDelete, name }) {
   const [isSwitchEnabled, toggleSwitch] = useState(false)
     const sendPushToken = () => {
         console.log(pushToken);
@@ -50,7 +50,9 @@ function ListItem({ title, image, pushToken }) {
             </View>
 
             <Icon name='bell' size={20} color="blue" onPress={sendPushToken} />    
-          
+            <Button title={'delete'} onPress={() => onDelete(title)}></Button>
+            <AppText style={styles.title}>{title}</AppText>
+            <AppText style={styles.title}>{name}</AppText>
         </View>
     );
 }
