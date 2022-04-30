@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, Button} from 'react-native';
 
 import AppText from './AppText';
 
-function ListItem({ title, image, pushToken }) {
+function ListItem({ title, image, pushToken, onDelete }) {
    
     const sendPushToken = () => {
         console.log(pushToken);
@@ -39,6 +39,7 @@ function ListItem({ title, image, pushToken }) {
                 <Image style={styles.image} source={image} />
             </View>
             <Button title={'Send Notification'} onPress={sendPushToken}></Button>
+            <Button title={'delete'} onPress={() => onDelete(title)}></Button>
             <AppText style={styles.title}>{title}</AppText>
         </View>
     );
