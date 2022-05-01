@@ -5,11 +5,10 @@ import { useSelector } from 'react-redux';
 import {getUser} from '../redux/usersReducer';
 import { Avatar } from 'react-native-elements';
 import { Icon } from '@rneui/themed';
-import { ref, uploadBytes, getStorage } from "firebase/storage";
+import { ref, uploadBytes, getStorage ,  getDownloadURL } from "firebase/storage";
 import {storage} from '../../firebase';
 import * as ImagePicker from 'expo-image-picker';
 import { Constants,Permissions } from 'expo';
-import 'react-native-get-random-values';
 
 function ProfileScreen(props) {
     const [editable, setEditable] = useState(false);
@@ -40,11 +39,23 @@ function ProfileScreen(props) {
             quality: 1,
           });
       
-          console.log(result);
       
-          if (!result.cancelled) {
-            setImage(result.uri);
-          }
+          console.log(result);
+    
+
+        //   const imagesRef = ref(storage, 'images');
+        //   try{
+        //   uploadBytes(imagesRef , result).then((snapshot) => {
+        //     console.log('Uploaded a blob or file!');
+        //   });
+        // }catch(err)
+        // {
+        //     console.log('upload error', err);
+        // }
+
+        //   if (!result.cancelled) {
+        //     setImage(result.uri);
+        //   }
 
           try {
             setUploading(true);
@@ -64,33 +75,42 @@ function ProfileScreen(props) {
         //   const uploadTask = uploadBytes(storageRef, file, metadata); 
         };
     
-    const uploadImageAsync = async(uri) => {
-        const blob = await new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-              resolve(xhr.response);
-            };
-            xhr.onerror = function (e) {
-              console.log(e);
-              reject(new TypeError("Network request failed"));
-            };
-            xhr.responseType = "blob";
-            xhr.open("GET", uri, true);
-            xhr.send(null);
-          });
-        
-          console.log('before')
+    
+async function uploadImageAsync(uri) {
+    // Why are we using XMLHttpRequest? See:
+    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
+      xhr.send(null);
+    });
+  
+    const imagesRef = ref(storage, 'images');
 
-        //   const fileRef = ref(storage(), uuid());
-          console.log('after')
-          const result = await uploadBytes(storage,"test.jpg", blob);
-          console.log('result', result);
-          console.log("blob",blob);
-          // We're done with the blob, close and release it
-          blob.close();
-        
-          return await getDownloadURL(fileRef);
-    }
+    try{
+        uploadBytes(imagesRef , blob).then((snapshot) => {
+          console.log('Uploaded a blob or file!');
+        });
+      }catch(err)
+      {
+          console.log('upload error', err);
+      }
+
+
+  
+    // We're done with the blob, close and release it
+    blob.close();
+  
+    return await getDownloadURL(imagesRef);
+  }
 
   
   const profileUser = useSelector(getUser);
