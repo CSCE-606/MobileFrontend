@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert, Switch } from 'react-native';
-import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot } from 'firebase/firestore';
+import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert } from 'react-native';
+import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import {db} from '../../firebase';
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
@@ -41,14 +41,19 @@ function FriendList({navigation}, props) {
   const onChangeDB = onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
-        console.log("New city: ", change.doc.data());
+        console.log("New city: ", "sucss");
+        
       }
-      // if (change.type === "modified") {
-      //     console.log("Modified city: ", change.doc.data());
-      // }
+      if (change.type === "modified") {
+          console.log("Modified city: ", change.doc.data().friendList);
+          setFriendList(change.doc.data().friendList)
+          setFriendRequest(change.doc.data().friendRequests)
+          
+      }
       // if (change.type === "removed") {
       //     console.log("Removed city: ", change.doc.data());
       // }
+      
     });
   });
   // ---end---
@@ -66,15 +71,14 @@ function FriendList({navigation}, props) {
       friendLists = doc.data().friendList;
       friendRequests = doc.data().friendRequests;
      
-      setUserId(doc.id)
+      setUserId(doc.id);
     })
     
-
-    setFriendRequest(friendRequests);  
+    setFriendRequest(friendRequests);
     
-    console.log('friendlist', friendLists);  
+    console.log('friendlist', friendLists);
     const pushTokenQ = query(userRef, where("username","in",friendLists));
-    let tokenSnapShot 
+    let tokenSnapShot;
     try{
       tokenSnapShot  = await getDocs(pushTokenQ);
     }catch(err)
@@ -97,7 +101,10 @@ function FriendList({navigation}, props) {
     setFriendList(friends);
   };
 
-  
+    //setFriendList(friends);
+    setFriendList(friendLists);
+
+  }
 
 
   useEffect(() => 
@@ -127,59 +134,48 @@ function FriendList({navigation}, props) {
 
   const handleDeletion = async(data) => {
     const newList = friendRequest.filter(f => f !== data);
+    const newFriendList = friendList.filter(f => f !== data);
     setFriendRequest(newList);
 
     const docRef = doc(db, "users", userId)
     await updateDoc(docRef,{
-      friendRequests: newList
+      friendRequests: newList,
+      friendList: arrayRemove({username: data})
     })
   }
   
+ 
   return(
     
-<SafeAreaView style={styles.container}>
-   
+    <SafeAreaView style={styles.container}>
+      
+      <View>
+        <View style={{left:300, top:-70, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handleDeletion} /></View>
+        <ScrollView style={{top:-10, width:360, height:520}}>
+          {
+            friendList.map((l, i) =>       
+              (<ListItem
+                key={i}
+                title={l.username}
+                name={l.name}
+                pushToken={l.pushToken}
+                onDelete={handleDeletion}
+                image = {require("../assets/fox.png")}
+              />)
+            )
+            
+          }
+        </ScrollView>
 
-    
-    <View>
-    <View style={{left:320, bottom:700, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handleDeletion} /></View>
-    
-   <ScrollView style={{top:-10, width:360, height:520}}>
-   
-    {
-   friendList.map((l, i) => 
-    
-        
-   (
-   
-   <ListItem
-        key={i}
-    
-        title={l.username}
-        pushToken={l.pushToken}
-        image = {require("../assets/fox.png")}
-      />
-    )
-)
-   }
-   </ScrollView> 
-      <Button
-        title="Add Friend"
-        onPress={() => 
-        navigation.navigate("AddFriend")
-        }
-      ></Button>
+        <Button
+          title="Add Friend"
+          onPress={() => navigation.navigate("AddFriend")}
+        />
+      </View>
 
-    </View>
+    </SafeAreaView>
 
-
-    {/* <View>
-    <NotificationPopup friendQueue={friendQueue} onAdd={handleAdd} onDelete={handleDelete} />
-    </View> */}
-
-        </SafeAreaView>
-
-    );
+  );
 };
 
 
