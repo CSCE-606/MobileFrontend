@@ -17,7 +17,7 @@ function RegisterScreen({navigation}) {
     const [popUpVisible, setPopUpVisible] = useState(false);
     const [popUpText, setPopUpText] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
-    const [fullName, setFullName] = useState();
+    const [fullName, setFullname] = useState();
 
     // const [useracc,setUser] = useState();
     const RegisterUser = async(e) => {
@@ -60,19 +60,30 @@ function RegisterScreen({navigation}) {
                     console.log(user);
                     console.log(user.email);
                     console.log('uid', user.uid);
+                    console.log('nmd',fullName);
+                    console.log('tmd',phoneNumber);
                     docRef = await addDoc(collection(db, "users"), {
                     email: user.email,
-                    username: user.email,
+                    username: fullName,
                     uid: user.uid,
                     friendList: [],
                     friendRequests: [],
-                    pushToken: [expoPushToken.data]
+                    geoLocation:
+                    {
+                    latitude: 15.616701789744717,
+                    longitude:  -100.338583,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,}
+                    ,
+                    pushToken: [expoPushToken.data],
+                    phoneNumber: phoneNumber,
                 });
             }
                 console.log("Document written with ID: ", docRef.id);
             } catch (e) {
-                console.error("Error adding document: ", e);
+                return console.error("Error adding document: ", e);
             }
+            Alert.alert("Register Successful. Please go back to Login page.")
     }
     return (
 
@@ -92,7 +103,7 @@ function RegisterScreen({navigation}) {
             placeholder = "Full Name"
             textContentType = "name"
             secureTextEntry 
-            onChangeText = {text => setFullName(text)}
+            onChangeText = {text => setFullname(text)}
             style={styles.textInput}
         />
         <AppTextInput 
