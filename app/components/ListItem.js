@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, Button, Switch} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AppText from './AppText';
 
-function ListItem({ title, image, pushToken, onDelete, name }) {
+function ListItem({ title, image,  onDelete, pushToken }) {
   const [isSwitchEnabled, toggleSwitch] = useState(false)
     const sendPushToken = () => {
         console.log(pushToken);

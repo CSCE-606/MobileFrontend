@@ -45,7 +45,7 @@ function RegisterScreen({navigation}) {
         }
         // setPopUpText("Register Successful. Please go back to Login page.");
         // setPopUpVisible(true);
-    
+            
    
             try {
                 let docRef;
@@ -76,6 +76,7 @@ function RegisterScreen({navigation}) {
                     longitudeDelta: 0.0421,}
                     ,
                     pushToken: [expoPushToken.data],
+                    avatarUrl: 'https://firebasestorage.googleapis.com/v0/b/curastone-74faf.appspot.com/o/blank-profile-picture-gc3270b627_1280.png?alt=media&token=c2312d65-9995-454b-a7ca-caa0f3051f14',
                     phoneNumber: phoneNumber,
                 });
             }
@@ -98,11 +99,10 @@ function RegisterScreen({navigation}) {
         <AppTextInput 
             autoCapitalize = 'none'
             autoCorrect = {false}
-            keyboardType = "default"
+            keyboardType = "email-address"
             icon = "account"
             placeholder = "Full Name"
             textContentType = "name"
-            secureTextEntry 
             onChangeText = {text => setFullname(text)}
             style={styles.textInput}
         />
@@ -133,7 +133,6 @@ function RegisterScreen({navigation}) {
             icon = "phone"
             placeholder = "Phone Number"
             textContentType = "telephoneNumber"
-            secureTextEntry 
             onChangeText = {text => setPhoneNumber(text)}
             style={styles.textInput}
         />

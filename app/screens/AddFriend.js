@@ -29,13 +29,13 @@ function AddFriend() {
       PotentialFriends.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         tempPotentialFriendList.push(doc.data());
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
       });
-      console.log("friendlist",tempPotentialFriendList);
+      //console.log("friendlist",tempPotentialFriendList);
       setPotentialFriendList(tempPotentialFriendList);
       updateDisplay(true);
     };
- 
+    console.log("test potential friend lis --->", PotentialFriendList)
     return(
 
       <ImageBackground 

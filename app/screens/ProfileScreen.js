@@ -10,7 +10,8 @@ import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc
 import * as ImagePicker from 'expo-image-picker';
 import {storage, db} from '../../firebase';
 import { Constants,Permissions } from 'expo';
-
+import 'react-native-get-random-values';
+import { uuid } from 'uuidv4';
 
 function ProfileScreen(props) {
     const [editable, setEditable] = useState(false);

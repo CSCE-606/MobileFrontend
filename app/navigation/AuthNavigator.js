@@ -27,7 +27,7 @@ function Home() {
 
 const AuthNavigator = () => (
     <Stack.Navigator>
-      
+       
         <Stack.Screen name = "Welcome" component  = {WelcomeScreen} options = {{headerShown: false}}/>
         <Stack.Screen name = "Profile" component  = {Profile} />
         <Stack.Screen name = "Friend" component  = {FriendList} />
