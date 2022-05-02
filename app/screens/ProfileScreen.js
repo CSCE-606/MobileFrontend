@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import { FlatList, StyleSheet, TextInput, Text, bodyText,CameraRoll, View, StatusBar, Platform, SafeAreaView } from 'react-native';
+import { ImageBackground, FlatList, StyleSheet, TextInput, Text, bodyText,CameraRoll, View, StatusBar, Platform, SafeAreaView } from 'react-native';
 import AppTextInput from '../components/AppTextInput';
 import { useSelector } from 'react-redux';
 import {getUser} from '../redux/usersReducer';
 import { Avatar } from 'react-native-elements';
 import { Icon } from '@rneui/themed';
-import { ref, uploadBytes, getStorage } from "firebase/storage";
-import {storage} from '../../firebase';
+import { ref, uploadBytes, getStorage,getDownloadURL } from "firebase/storage";
+import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
+import {storage, db} from '../../firebase';
 import { Constants,Permissions } from 'expo';
 
 
@@ -22,122 +23,180 @@ function ProfileScreen(props) {
     const [files, setFiles] = useState([]);
     const [avatarImage, setImage] = useState();
     const [uploading, setUploading] = useState(false);
+    const [userId, setUserId] = useState();
     const metadata = {
         contentType: 'image/jpeg',
       };
-     
 
-    const onPress = async() => {
-
-        // await Permissions.askAsync(Permissions.CAMERA_ROLL);
-        // await Permissions.askAsync(Permissions.CAMERA);
-
-
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-          });
-      
-          console.log(result);
-      
-          if (!result.cancelled) {
-            setImage(result.uri);
-          }
-
-          try {
-            setUploading(true);
-      
-            if (!result.cancelled) {
-              const uploadUrl = await uploadImageAsync(result.uri);
-              console.log('upload url', uploadUrl);
-              setImage(uploadUrl);
-            }
-          } catch (e) {
-            console.log(e);
-            alert("Upload failed, sorry :(");
-          } finally {
-            setUploading(false);
-          }
-
-        //   const uploadTask = uploadBytes(storageRef, file, metadata); 
-        };
-    
-    const uploadImageAsync = async(uri) => {
-        const blob = await new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-              resolve(xhr.response);
-            };
-            xhr.onerror = function (e) {
-              console.log(e);
-              reject(new TypeError("Network request failed"));
-            };
-            xhr.responseType = "blob";
-            xhr.open("GET", uri, true);
-            xhr.send(null);
-          });
-        
-          console.log('before')
-
-        //   const fileRef = ref(storage(), uuid());
-          console.log('after')
-          const result = await uploadBytes(storage,"test.jpg", blob);
-          console.log('result', result);
-          console.log("blob",blob);
-          // We're done with the blob, close and release it
-          blob.close();
-        
-          return await getDownloadURL(fileRef);
-    }
-
+      const emailUser = useSelector(getUser);
+      const getProfileInfo = async() => {
   
-  const profileUser = useSelector(getUser);
-  console.log(profileUser);
+    
+        const q = query(collection(db, "users"), where("email", "==", emailUser ));
+        let profileInfo;
+        try{
+        profileInfo = await getDocs(q);
+        }catch(err){
+          console.log('dsds',err);
+        }
+        
+        profileInfo.forEach((doc) => {
+          const username = doc.data().username;
+          console.log("test", doc.data());
+          setImage(doc.data().avatarUrl);
+          console.log('avatar url', doc.data().avatarUrl)
+          setPhone(doc.data().phoneNumber);
+          setUserId(doc.id);
+  
+          setUserName(username);
+        })
+      }
+  
+     
+    
+        useEffect(async() =>{
+          try{
+          await getProfileInfo();
+          }catch(err){
+            console.log(err);
+          }
+        },[]);
+  
+        const editProfile = () => {
+          console.log('text');
+        }
+  
+      const onPress = async() => {
+  
+          // await Permissions.askAsync(Permissions.CAMERA_ROLL);
+          // await Permissions.askAsync(Permissions.CAMERA);
+  
+  
+          let result = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ImagePicker.MediaTypeOptions.All,
+              allowsEditing: true,
+              aspect: [4, 3],
+              quality: 1,
+            });
+        
+        
+            console.log(result);
+      
+  
+          //   const imagesRef = ref(storage, 'images');
+          //   try{
+          //   uploadBytes(imagesRef , result).then((snapshot) => {
+          //     console.log('Uploaded a blob or file!');
+          //   });
+          // }catch(err)
+          // {
+          //     console.log('upload error', err);
+          // }
+  
+          //   if (!result.cancelled) {
+          //     setImage(result.uri);
+          //   }
+  
+            try {
+              setUploading(true);
+        
+              if (!result.cancelled) {
+                const uploadUrl = await uploadImageAsync(result.uri);
+                console.log('upload url', uploadUrl);
+                setImage(uploadUrl);
+                   
+                // const docRef = doc(db, "users", userId)
+                // await updateDoc(docRef,{
+                //   avatarUrl: uploadUrl,
+                // })
+              }
+            } catch (e) {
+              console.log(e);
+              alert("Upload failed, sorry :(");
+            } finally {
+              setUploading(false);
+            }
+  
+          //   const uploadTask = uploadBytes(storageRef, file, metadata); 
+          };
+      
+      
+  async function uploadImageAsync(uri) {
+      // Why are we using XMLHttpRequest? See:
+      // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function (e) {
+          console.log(e);
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", uri, true);
+        xhr.send(null);
+      });
+    
+      const imagesRef = ref(storage, 'images');
+  
+      try{
+          uploadBytes(imagesRef , blob).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+          });
+        }catch(err)
+        {
+            console.log('upload error', err);
+        }
+  
+  
+    
+      // We're done with the blob, close and release it
+      blob.close();
+    
+      return await getDownloadURL(imagesRef);
+    }
     return (
-    <SafeAreaView>
-        <View style={{alignItems: 'center'}}>
+      <ImageBackground 
+                   
+      source = {require("../assets/wiguna.jpg")}
+      style = {styles.background}
+>
+  
+<View style={{alignItems: 'center'}}>
         <Avatar
             rounded
-            source={{
-                uri:
-                'https://cdn.landesa.org/wp-content/uploads/default-user-image.png',
-            }}
+            source={{uri:avatarImage,}}
             size="xlarge"
             >
                 <Avatar.Accessory onPress={onPress}/>
             </Avatar>
+            <Text>Change Profile Picture</Text>
             </View>
+
     <View style={styles.view}>
-      <Text>username</Text>
-      <TextInput
-          style={styles.input}
-          onChangeText = {setUserName}
-        />
+      <View >
+      
+      </View>
+      <View style={styles.textBox}>  
+      <Text style={{flexGrow: 1}}>User Name</Text>
+      <Text style={{flexGrow: 1}}>{username} </Text>
+           
+        </View>
+        <View style={styles.textBox}>  
+      <Text style={{flexGrow: 1}}>Your Email</Text>
+     <Text style={{flexGrow: 1}}>{emailUser} </Text>
+           
+        </View>
+        <View style={styles.textBox}>  
+      <Text style={{flexGrow: 1}}>Phone</Text>
+      <Text style={{flexGrow: 1}}>{phone} </Text>
+           
+        </View>
+        
+
     </View>
-    {/* <View style={styles.view}>
-      <Text>email</Text>
-      <TextInput
-          style={styles.input}
-       
-        />
-    </View>
-    <View style={styles.view}>
-      <Text>Test</Text>
-      <TextInput
-          style={styles.input}
-       
-        />
-    </View>
-    <View style={styles.view}>
-      <Text>Test</Text>
-      <TextInput
-          style={styles.input}
-       
-        />
-    </View> */}
-      </SafeAreaView>
+      </ImageBackground>
     );
 }
 
@@ -145,6 +204,11 @@ const styles = StyleSheet.create({
     view: {
         height: 100,
         padding: 10,
+      flex:7, 
+      alignItems: "center"
+    },
+    textBox:{
+      flexDirection:'row',backgroundColor:'white',opacity:0.5
     },
     buttonContainer: {
         flexDirection: "row",
@@ -161,17 +225,46 @@ const styles = StyleSheet.create({
         
     },
     input: {
-        margin: 15,
-        height: 40,
+      height: 15,
+      margin: 40,
+      // width: 200,
+      // top:-500,
         borderColor: '#7a42f4',
-        borderWidth: 1
+        borderWidth: 1,
+          // backgroundColor:"white",
+          // opacity:0.75
       },
     head: {
         alignItems: "center",
         backgroundColor: "orange",
         height:30,
-    }
-
+    },
+    background:{
+      flex:1,
+     
+      backgroundColor:"transparent",
+      alignItems: "center"
+     },
+    //  TextInput:{
+    //   height: 40,
+    //   margin: 20,
+    //   width: 200,
+    //   top:-500,
+    //     borderColor: '#7a42f4',
+    //     borderWidth: 0,
+    //       backgroundColor:"white",
+    //       opacity:0.75
+    //  },
+    //  username: {
+    //   height: 40,
+    //   margin: 20,
+    //   width: 200,
+    //   top:-500,
+    //     borderColor: '#7a42f4',
+    //     borderWidth: 0,
+    //       backgroundColor:"white",
+    //       opacity:0.75  
+    //  }
 })
 
 

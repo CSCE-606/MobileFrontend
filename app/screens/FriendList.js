@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert } from 'react-native';
+import { ImageBackground, View, Text, Image, StyleSheet, Button, SafeAreaView,ScrollView, Alert } from 'react-native';
 import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import {db} from '../../firebase';
 import AppText from "../components/AppText";
@@ -101,12 +101,6 @@ function FriendList({navigation}, props) {
     setFriendList(friends);
   };
 
-    //setFriendList(friends);
-    setFriendList(friendLists);
-
-  }
-
-
   useEffect(() => 
   {
     // console.log("testz");
@@ -146,12 +140,18 @@ function FriendList({navigation}, props) {
   
  
   return(
+
+    <ImageBackground 
+                   
+    source = {require("../assets/wiguna.jpg")}
+    style = {styles.background}
+>
     
     <SafeAreaView style={styles.container}>
       
       <View>
-        <View style={{left:300, top:-70, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handleDeletion} /></View>
-        <ScrollView style={{top:-10, width:360, height:520}}>
+        <View style={{left:340, top:40, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handleDeletion} /></View>
+        <ScrollView style={{top:100, width:360, height:520}}>
           {
             friendList.map((l, i) =>       
               (<ListItem
@@ -160,20 +160,25 @@ function FriendList({navigation}, props) {
                 name={l.name}
                 pushToken={l.pushToken}
                 onDelete={handleDeletion}
-                image = {require("../assets/fox.png")}
+                image = {require("../assets/ahmed.jpg")}
+                style={styles.ListItem}
+
+                
+                
               />)
             )
             
           }
         </ScrollView>
 
-        <Button
+        {/* <Button
           title="Add Friend"
           onPress={() => navigation.navigate("AddFriend")}
-        />
+        /> */}
       </View>
 
     </SafeAreaView>
+    </ImageBackground>
 
   );
 };
@@ -200,12 +205,28 @@ const styles = StyleSheet.create({
       marginVertical: 8,
       borderBottomColor: '#737373',
       borderBottomWidth: StyleSheet.hairlineWidth,
+
     },
     container: {
       flex: 1,
       alignItems: "center",
       justifyContent: "center"
     },
+    background:{
+      flex:1,
+      justifyContent: "flex-end",
+      backgroundColor:"transparent",
+      alignItems: "center"
+     },
+     ListItem:{
+      height: 40,
+      margin: 20,
+      width: 200,
+      borderWidth: 0,
+      padding: 10,
+      backgroundColor:"white",
+      opacity:0.75
+     },
   });
 
 

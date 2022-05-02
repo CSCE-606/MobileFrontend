@@ -42,6 +42,7 @@ function ListItem({ title, image, pushToken, onDelete, name }) {
         ios_backgroundColor="#3e3e3e"
         onValueChange={toggleSwitch}
         value={isSwitchEnabled}
+        style={{left:300}}
        ></Switch>
        {console.log("username",title)}
         
@@ -49,9 +50,9 @@ function ListItem({ title, image, pushToken, onDelete, name }) {
                 <AppText style={styles.title}>{title}</AppText>
             </View>
 
-            <Icon name='bell' size={20} color="blue" onPress={sendPushToken} />    
-            <Button title={'delete'} onPress={() => onDelete(title)}></Button>
-            <AppText style={styles.title}>{title}</AppText>
+            <Icon name='bell' size={20} color="blue" onPress={sendPushToken} style={{left:300, top:-70}}/>    
+            <Button title={'Delete'} onPress={() => onDelete(title)}></Button>
+            {/* <AppText style={styles.title}>{title}</AppText> */}
             <AppText style={styles.title}>{name}</AppText>
         </View>
     );
@@ -60,7 +61,10 @@ function ListItem({ title, image, pushToken, onDelete, name }) {
 
 const styles = StyleSheet.create({
     container: {
-     
+      backgroundColor:"white",
+      opacity:0.75,
+      margin: "2% 0% 2% 0%",
+   
     },
 
     image: {
@@ -71,7 +75,19 @@ const styles = StyleSheet.create({
 
     title: {
         fontWeight: "500",
+        left:300,
+        top:-70,
+
     },
+    ListItem:{
+      height: 40,
+      margin: 20,
+      width: 200,
+      borderWidth: 0,
+      padding: 10,
+      backgroundColor:"white",
+      opacity:0.75
+     },
 
 })
 

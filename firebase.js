@@ -34,4 +34,4 @@ const app = initializeApp(
 const analytics = getAnalytics(app);
 export const authentication = getAuth(app);
 export const db = getFirestore(app);
-export const storage = getStorage(app);
+export const storage = getStorage(app, "gs://curastone-74faf.appspot.com");
