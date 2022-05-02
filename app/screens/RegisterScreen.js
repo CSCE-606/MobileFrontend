@@ -98,11 +98,10 @@ function RegisterScreen({navigation}) {
         <AppTextInput 
             autoCapitalize = 'none'
             autoCorrect = {false}
-            keyboardType = "default"
+            keyboardType = "email-address"
             icon = "account"
             placeholder = "Full Name"
             textContentType = "name"
-            secureTextEntry 
             onChangeText = {text => setFullname(text)}
             style={styles.textInput}
         />
@@ -133,7 +132,6 @@ function RegisterScreen({navigation}) {
             icon = "phone"
             placeholder = "Phone Number"
             textContentType = "telephoneNumber"
-            secureTextEntry 
             onChangeText = {text => setPhoneNumber(text)}
             style={styles.textInput}
         />

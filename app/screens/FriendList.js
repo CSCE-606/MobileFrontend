@@ -61,7 +61,7 @@ function FriendList({navigation}, props) {
  
 
   const listFriend = async() => {
-    const userQ = query(userRef, where("username","==",profileUser)); 
+    const userQ = query(userRef, where("email","==",profileUser)); 
     const querySnapShot = await getDocs(userQ);
 
     let friendLists = [];
@@ -77,7 +77,7 @@ function FriendList({navigation}, props) {
     setFriendRequest(friendRequests);
     
     console.log('friendlist', friendLists);
-    const pushTokenQ = query(userRef, where("username","in",friendLists));
+    const pushTokenQ = query(userRef, where("email","in",friendLists));
     let tokenSnapShot;
     try{
       tokenSnapShot  = await getDocs(pushTokenQ);
@@ -99,7 +99,7 @@ function FriendList({navigation}, props) {
       })
     })
     setFriendList(friends);
-  };
+  ;
 
     //setFriendList(friends);
     setFriendList(friendLists);
@@ -176,8 +176,8 @@ function FriendList({navigation}, props) {
     </SafeAreaView>
 
   );
-};
 
+        }
 
 
 const styles = StyleSheet.create({
