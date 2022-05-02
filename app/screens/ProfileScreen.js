@@ -1,20 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import { FlatList, StyleSheet, TextInput, Text, bodyText,CameraRoll, Button, View, StatusBar, Platform, SafeAreaView } from 'react-native';
+import { FlatList, StyleSheet, TextInput, Text, bodyText,CameraRoll, View, StatusBar, Platform, SafeAreaView } from 'react-native';
 import AppTextInput from '../components/AppTextInput';
 import { useSelector } from 'react-redux';
 import {getUser} from '../redux/usersReducer';
 import { Avatar } from 'react-native-elements';
 import { Icon } from '@rneui/themed';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import {storage, db} from '../../firebase';
-import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { ref, uploadBytes, getStorage } from "firebase/storage";
+import {storage} from '../../firebase';
 import * as ImagePicker from 'expo-image-picker';
 import { Constants,Permissions } from 'expo';
+import 'react-native-get-random-values';
+import { uuid } from 'uuidv4';
 
 function ProfileScreen(props) {
-  // const emailUser = useSelector(getUser);  
     const [editable, setEditable] = useState(false);
     const [username, setUserName] = useState();
+    const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
     const [gender, setGender] = useState('Male');
     const [birthday, setBirthday] = useState();
@@ -22,49 +23,10 @@ function ProfileScreen(props) {
     const [files, setFiles] = useState([]);
     const [avatarImage, setImage] = useState();
     const [uploading, setUploading] = useState(false);
-    const [userId, setUserId] = useState();
     const metadata = {
         contentType: 'image/jpeg',
       };
-    
-    const emailUser = "testnihao@gmail.com";
-
-    const getProfileInfo = async() => {
-  
-    
-      const q = query(collection(db, "users"), where("email", "==", emailUser ));
-      let profileInfo;
-      try{
-      profileInfo = await getDocs(q);
-      }catch(err){
-        console.log('dsds',err);
-      }
-      
-      profileInfo.forEach((doc) => {
-        const username = doc.data().username;
-        console.log("test", doc.data());
-        setImage(doc.data().avatarUrl);
-        console.log('avatar url', doc.data().avatarUrl)
-        setPhone(doc.data().phoneNumber);
-        setUserId(doc.id);
-
-        setUserName(username);
-      })
-    }
-
-   
-  
-      useEffect(async() =>{
-        try{
-        await getProfileInfo();
-        }catch(err){
-          console.log(err);
-        }
-      },[]);
-
-      const editProfile = () => {
-        console.log('text');
-      }
+     
 
     const onPress = async() => {
 
@@ -79,23 +41,11 @@ function ProfileScreen(props) {
             quality: 1,
           });
       
-      
           console.log(result);
-    
-
-        //   const imagesRef = ref(storage, 'images');
-        //   try{
-        //   uploadBytes(imagesRef , result).then((snapshot) => {
-        //     console.log('Uploaded a blob or file!');
-        //   });
-        // }catch(err)
-        // {
-        //     console.log('upload error', err);
-        // }
-
-        //   if (!result.cancelled) {
-        //     setImage(result.uri);
-        //   }
+      
+          if (!result.cancelled) {
+            setImage(result.uri);
+          }
 
           try {
             setUploading(true);
@@ -104,11 +54,6 @@ function ProfileScreen(props) {
               const uploadUrl = await uploadImageAsync(result.uri);
               console.log('upload url', uploadUrl);
               setImage(uploadUrl);
-                 
-              // const docRef = doc(db, "users", userId)
-              // await updateDoc(docRef,{
-              //   avatarUrl: uploadUrl,
-              // })
             }
           } catch (e) {
             console.log(e);
@@ -120,80 +65,79 @@ function ProfileScreen(props) {
         //   const uploadTask = uploadBytes(storageRef, file, metadata); 
         };
     
-    
-async function uploadImageAsync(uri) {
-    // Why are we using XMLHttpRequest? See:
-    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-        resolve(xhr.response);
-      };
-      xhr.onerror = function (e) {
-        console.log(e);
-        reject(new TypeError("Network request failed"));
-      };
-      xhr.responseType = "blob";
-      xhr.open("GET", uri, true);
-      xhr.send(null);
-    });
-  
-    const imagesRef = ref(storage, 'images');
+    const uploadImageAsync = async(uri) => {
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+              resolve(xhr.response);
+            };
+            xhr.onerror = function (e) {
+              console.log(e);
+              reject(new TypeError("Network request failed"));
+            };
+            xhr.responseType = "blob";
+            xhr.open("GET", uri, true);
+            xhr.send(null);
+          });
+        
+          console.log('before')
 
-    try{
-        uploadBytes(imagesRef , blob).then((snapshot) => {
-          console.log('Uploaded a blob or file!');
-        });
-      }catch(err)
-      {
-          console.log('upload error', err);
-      }
-
+        //   const fileRef = ref(storage(), uuid());
+          console.log('after')
+          const result = await uploadBytes(storage,"test.jpg", blob);
+          console.log('result', result);
+          console.log("blob",blob);
+          // We're done with the blob, close and release it
+          blob.close();
+        
+          return await getDownloadURL(fileRef);
+    }
 
   
-    // We're done with the blob, close and release it
-    blob.close();
-  
-    return await getDownloadURL(imagesRef);
-  }
-
-
+  const profileUser = useSelector(getUser);
+  console.log(profileUser);
     return (
     <SafeAreaView>
         <View style={{alignItems: 'center'}}>
         <Avatar
             rounded
-            source={{uri:avatarImage,}}
+            source={{
+                uri:
+                'https://cdn.landesa.org/wp-content/uploads/default-user-image.png',
+            }}
             size="xlarge"
             >
                 <Avatar.Accessory onPress={onPress}/>
             </Avatar>
-            <Text>Change Profile Picture</Text>
             </View>
-
     <View style={styles.view}>
-      <View style={{alignItems:'flex-end'}}>
-      
-      </View>
-      <View style={{flexDirection:'row'}}>  
-      <Text style={{flexGrow: 1}}>User Name</Text>
-      <Text style={{flexGrow: 1}}>{username} </Text>
-           
-        </View>
-        <View style={{flexDirection:'row'}}>
-      <Text style={{flexGrow: 1}}>Your Email</Text>
-     <Text style={{flexGrow: 1}}>{emailUser} </Text>
-           
-        </View>
-        <View style={{flexDirection:'row'}}>
-      <Text style={{flexGrow: 1}}>Phone</Text>
-      <Text style={{flexGrow: 1}}>{phone} </Text>
-           
-        </View>
-        
-
+      <Text>username</Text>
+      <TextInput
+          style={styles.input}
+          onChangeText = {setUserName}
+        />
     </View>
-   
+    {/* <View style={styles.view}>
+      <Text>email</Text>
+      <TextInput
+          style={styles.input}
+       
+        />
+    </View>
+    <View style={styles.view}>
+      <Text>Test</Text>
+      <TextInput
+          style={styles.input}
+       
+        />
+    </View>
+    <View style={styles.view}>
+      <Text>Test</Text>
+      <TextInput
+          style={styles.input}
+       
+        />
+    </View> */}
       </SafeAreaView>
     );
 }
@@ -221,8 +165,7 @@ const styles = StyleSheet.create({
         margin: 15,
         height: 40,
         borderColor: '#7a42f4',
-        borderWidth: 1,
-        flexGrow: 4,
+        borderWidth: 1
       },
     head: {
         alignItems: "center",
