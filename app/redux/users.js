@@ -58,15 +58,11 @@ import get from 'lodash.get'
  dispatch({ 
  type: LOGIN, 
  }) 
-//    setToken(token) 
-//  const decoded = verifyToken(token) 
-//    if (decoded) 
-//    { 
  dispatch({ 
  type: SET_USER_DATA, 
  user: userProfile,  
  }) 
-//    history.push(roomId ? `/room/${roomId}` : '/') 
+
  } 
 //  } 
 //    export const logout = () => (dispatch) => { 
