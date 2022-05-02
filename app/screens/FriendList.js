@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     fixToText: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-    },
+    },  
     separator: {
       marginVertical: 8,
       borderBottomColor: '#737373',
