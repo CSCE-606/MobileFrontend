@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, Image, StyleSheet, Button, SafeAreaView, Alert, TextInput, ScrollView} from 'react-native';
+import { ImageBackground, View, Text, Image, StyleSheet, Button, SafeAreaView, Alert, TextInput, ScrollView} from 'react-native';
 import AppText from "../components/AppText";
 import AppButton from '../components/AppButton';
 import AddFriendItem from '../components/AddFriendItem';
@@ -11,6 +11,7 @@ import {db} from '../../firebase';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { useSelector } from 'react-redux';
 import {getUser} from '../redux/usersReducer';
+import colors from "../config/colors";
 
 function AddFriend() {
     const [username, setUserName]= useState();
@@ -18,9 +19,6 @@ function AddFriend() {
     const [displayFriendList, updateDisplay] = useState(false);
     const profileUser = useSelector(getUser);
     const userRef = collection(db,'users');
-
-
-
 
     const searchUser = async () => {
       const q1 = query(userRef, orderBy('username'), startAt(username), endAt(username+"\uf8ff"));
@@ -40,9 +38,15 @@ function AddFriend() {
     console.log("test potential friend lis --->", PotentialFriendList)
     return(
 
+      <ImageBackground 
+                   
+                   source = {require("../assets/wiguna.jpg")}
+                   style = {styles.background}
+        >
+
 <SafeAreaView style={styles.container}>
     <View>
-    <Text>UserName</Text>    
+    {/* <Text>UserName</Text>     */}
       <Button
         title="Search"
         onPress={() => searchUser()}
@@ -64,16 +68,13 @@ function AddFriend() {
          )
      )
       : null}
-    </ScrollView>
-    </View>
-    
-      
+        </ScrollView>
+        </View>
         </SafeAreaView>
-
+        </ImageBackground>
+        
     );
 };
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -97,11 +98,24 @@ const styles = StyleSheet.create({
 
         input: {
           height: 40,
-          margin: 12,
-          borderWidth: 1,
+          margin: 20,
+          width: 200,
+          borderWidth: 0,
           padding: 10,
+          backgroundColor:"white",
+          opacity:0.75
      },
-      
+     background:{
+      flex:1,
+      justifyContent: "flex-end",
+      backgroundColor:"transparent",
+      alignItems: "center"
+     },
+     separator: {
+      width: "100%",
+      height: 1,
+      backgroundColor: colors.light,
+    },
   });
   
 export default AddFriend;
