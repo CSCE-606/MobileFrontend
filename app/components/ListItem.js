@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, Button, Switch} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AppText from './AppText';
 
-function ListItem({ title, image,  onDelete, pushToken }) {
+function ListItem({ title, image,  onDelete, pushToken, name }) {
   const [isSwitchEnabled, toggleSwitch] = useState(false)
     const sendPushToken = () => {
         console.log(pushToken);
@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
     container: {
       backgroundColor:"white",
       opacity:0.75,
-      margin: "2% 0% 2% 0%",
+      marginTop: "2%",
+      marginBottom:"2%"
    
     },
 
