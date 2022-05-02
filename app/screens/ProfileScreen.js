@@ -9,7 +9,8 @@ import { ref, uploadBytes, getStorage } from "firebase/storage";
 import {storage} from '../../firebase';
 import * as ImagePicker from 'expo-image-picker';
 import { Constants,Permissions } from 'expo';
-
+import 'react-native-get-random-values';
+import { uuid } from 'uuidv4';
 
 function ProfileScreen(props) {
     const [editable, setEditable] = useState(false);

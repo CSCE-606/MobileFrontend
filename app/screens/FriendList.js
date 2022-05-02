@@ -99,13 +99,14 @@ function FriendList({navigation}, props) {
       })
     })
     setFriendList(friends);
-  };
-
+  ;
+  }
    // setFriendList(friends);
     //setFriendList(friendLists);
 
   
 
+  
 
   useEffect(() => 
   {
@@ -200,8 +201,8 @@ function FriendList({navigation}, props) {
     </SafeAreaView>
 
   );
-};
 
+        }
 
 
 const styles = StyleSheet.create({
@@ -231,30 +232,6 @@ const styles = StyleSheet.create({
       justifyContent: "center"
     },
   });
-
-
-const Listing = [
-  {
-    id: "Amy",
-    Email: "aaa111@gmail.com",
-    PhoneNumber: 8888888888,
-  },
-  {
-    id: "Allen",
-    Email: "ccc333@gmail.com",
-    PhoneNumber: 6666666666,
-  },
-  {
-    id: "Alex",
-    Email: "bbb222@gmail.com",
-    PhoneNumbe: 7777777777,
-  },
-  {
-    id: "Andy",
-    Email: "ddd444@gmail.com",
-    PhoneNumbe: 5555555555,
-  },
-];
 
 const mapStateToProps = (state) => {
   const { users } = state
