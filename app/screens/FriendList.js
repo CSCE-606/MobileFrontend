@@ -36,16 +36,16 @@ function FriendList({navigation}, props) {
 
   const profileUser = useSelector(getUser);   // popup123@gmail.com
   
-  const q = query(collection(db, "users"), where("username", "==", profileUser));
+  const q = query(collection(db, "users"), where("email", "==", profileUser));
  
   const onChangeDB = onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
-        console.log("New city: ", "sucss");
+        //console.log("New city: ", "sucss");
         
       }
       if (change.type === "modified") {
-          console.log("Modified city: ", change.doc.data().friendList);
+         // console.log("Modified city: ", change.doc.data().friendList);
           setFriendList(change.doc.data().friendList)
           setFriendRequest(change.doc.data().friendRequests)
           
@@ -61,7 +61,7 @@ function FriendList({navigation}, props) {
  
 
   const listFriend = async() => {
-    const userQ = query(userRef, where("username","==",profileUser)); 
+    const userQ = query(userRef, where("email","==",profileUser)); 
     const querySnapShot = await getDocs(userQ);
 
     let friendLists = [];
@@ -76,8 +76,8 @@ function FriendList({navigation}, props) {
     
     setFriendRequest(friendRequests);
     
-    console.log('friendlist', friendLists);
-    const pushTokenQ = query(userRef, where("username","in",friendLists));
+    //console.log('friendlist', friendLists);
+    const pushTokenQ = query(userRef, where("email","in",friendLists));
     let tokenSnapShot;
     try{
       tokenSnapShot  = await getDocs(pushTokenQ);
@@ -101,10 +101,10 @@ function FriendList({navigation}, props) {
     setFriendList(friends);
   };
 
-    //setFriendList(friends);
-    setFriendList(friendLists);
+   // setFriendList(friends);
+    //setFriendList(friendLists);
 
-  }
+  
 
 
   useEffect(() => 
@@ -128,22 +128,45 @@ function FriendList({navigation}, props) {
     const docRef = doc(db, "users", userId)
     await updateDoc(docRef,{
       friendRequests: newList,
-      friendList: arrayUnion({username: data})
+      friendList: arrayUnion({data})
     })
+
+    // sync friendlist for the pp who initiate the request
+    const snapshotOrigin = query(userRef,where('username', '==', data));
+    const userDocOrigin=await getDocs(snapshotOrigin);
+    let idOrigin;
+    userDocOrigin.forEach((doc) => {
+        
+      res=doc.data();
+      idOrigin = doc.id
+
+    });
+      
+    const docRefOrigin = doc(db, "users", idOrigin);
+      await updateDoc(docRefOrigin,{
+          friendList: arrayUnion(profileUser)
+      })
+    
   }
 
   const handleDeletion = async(data) => {
-    const newList = friendRequest.filter(f => f !== data);
-    const newFriendList = friendList.filter(f => f !== data);
+  
+    const newList = friendRequest.filter(f => f.username !== data);
+    const newFriendList = friendList.filter(f => f.username !== data);
     setFriendRequest(newList);
-
+    setFriendList(newFriendList);
     const docRef = doc(db, "users", userId)
+    try{
     await updateDoc(docRef,{
       friendRequests: newList,
-      friendList: arrayRemove({username: data})
-    })
+      friendList: arrayRemove({data})
+    })}catch(err){
+      console.log(err);
+    }
+    console.log(newFriendList);
+    
   }
-  
+
  
   return(
     
@@ -151,22 +174,23 @@ function FriendList({navigation}, props) {
       
       <View>
         <View style={{left:300, top:-70, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handleDeletion} /></View>
-        <ScrollView style={{top:-10, width:360, height:520}}>
+       <View style={{top:-10, width:360, height:520}}>
+        <ScrollView >
           {
             friendList.map((l, i) =>       
               (<ListItem
                 key={i}
                 title={l.username}
                 name={l.name}
-                pushToken={l.pushToken}
                 onDelete={handleDeletion}
+                pushToken={l.pushToken}
                 image = {require("../assets/fox.png")}
               />)
             )
             
           }
         </ScrollView>
-
+        </View>
         <Button
           title="Add Friend"
           onPress={() => navigation.navigate("AddFriend")}

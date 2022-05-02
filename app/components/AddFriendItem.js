@@ -10,41 +10,41 @@ function AddFriendItem({ title, image,username }) {
     const [popup,Setpopup]=useState(false)
     const [displayAlert, showAlert] = useState(false);
     const profileUser = useSelector(getUser);
-    const userRef = collection(db,'users');
 
+    const userRef = collection(db,'users');
+    
 
     const showUsername = async() =>{
-
+        //console.log("getuser:", getUser)
         // read profileUser Docs and update profileUser friendRequests
-
+      
         var friendRequest=[]
         var newFriendRequest=[]
         friendRequest.push(username)
-        const snapshot = query(userRef,where('username', '==', profileUser));
+        const snapshot = query(userRef,where('username', '==', username));
         const userDoc=await getDocs(snapshot);
         let id;
-
+        let res;
+        
 
         userDoc.forEach((doc) => {
         
         res=doc.data();
         id = doc.id
 
-        console.log('sb',id)
-        console.log('cao',res.friendRequests)
+       
+        newFriendRequest=friendRequest.concat(profileUser);
 
-        newFriendRequest=friendRequest.concat(res.friendRequests);
-
-        console.log('tmd',newFriendRequest)
+       // console.log('tmd',newFriendRequest)
 
           });
 
-        
+        //  console.log("TEST friendRequest --->", newFriendRequest)
         
         
         const docRef = doc(db, "users", id);
         await updateDoc(docRef,{
-            friendRequests: newFriendRequest
+            friendRequests: arrayUnion(profileUser)
           })
         
         // const docSnap = await getDoc(docRef);
