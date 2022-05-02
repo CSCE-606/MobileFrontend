@@ -48,6 +48,6 @@ For Android:
 
 Once Expo is installed on your smartphone, open camera and scan the QR Code below:
 
-![](Aspose.Words.a69ec872-f38c-4c71-b302-9c8d3521fcae.003.jpeg)
+![stack Overflow](https://expo.dev/@felzek/Curastone?serviceType=classic&distribution=expo-go)
 
 For now, this QR Code only worked on Android devices, because Apple imposed new privacy restrictions. The team has to publish our app to the Apple Store or Apple TestFlight. The team is still processing the publish procedures. 
