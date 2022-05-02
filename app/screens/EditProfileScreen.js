@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import {getUser} from '../redux/usersReducer';
 import { Avatar } from 'react-native-elements';
 import { Icon } from '@rneui/themed';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getStorage } from "firebase/storage";
 import {storage, db} from '../../firebase';
 import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
@@ -22,13 +22,11 @@ function ProfileScreen(props) {
     const [files, setFiles] = useState([]);
     const [avatarImage, setImage] = useState();
     const [uploading, setUploading] = useState(false);
-    const [userId, setUserId] = useState();
     const metadata = {
         contentType: 'image/jpeg',
       };
     
     const emailUser = "testnihao@gmail.com";
-
     const getProfileInfo = async() => {
   
     
@@ -45,9 +43,6 @@ function ProfileScreen(props) {
         console.log("test", doc.data());
         setImage(doc.data().avatarUrl);
         console.log('avatar url', doc.data().avatarUrl)
-        setPhone(doc.data().phoneNumber);
-        setUserId(doc.id);
-
         setUserName(username);
       })
     }
@@ -104,11 +99,6 @@ function ProfileScreen(props) {
               const uploadUrl = await uploadImageAsync(result.uri);
               console.log('upload url', uploadUrl);
               setImage(uploadUrl);
-                 
-              // const docRef = doc(db, "users", userId)
-              // await updateDoc(docRef,{
-              //   avatarUrl: uploadUrl,
-              // })
             }
           } catch (e) {
             console.log(e);
@@ -168,32 +158,61 @@ async function uploadImageAsync(uri) {
             >
                 <Avatar.Accessory onPress={onPress}/>
             </Avatar>
-            <Text>Change Profile Picture</Text>
             </View>
-
     <View style={styles.view}>
       <View style={{alignItems:'flex-end'}}>
-      
+      <Text onPress={editProfile} style={{alignItems:'flex-end'}}>Edit Profile</Text>
       </View>
       <View style={{flexDirection:'row'}}>  
       <Text style={{flexGrow: 1}}>User Name</Text>
-      <Text style={{flexGrow: 1}}>{username} </Text>
+      <TextInput
+          style={styles.input}
+          onChangeText = {setUserName}
+        />
            
         </View>
         <View style={{flexDirection:'row'}}>
       <Text style={{flexGrow: 1}}>Your Email</Text>
-     <Text style={{flexGrow: 1}}>{emailUser} </Text>
+      <TextInput
+          style={styles.input}
+          onChangeText = {setUserName}
+        />
            
         </View>
         <View style={{flexDirection:'row'}}>
       <Text style={{flexGrow: 1}}>Phone</Text>
-      <Text style={{flexGrow: 1}}>{phone} </Text>
+      <TextInput
+          style={styles.input}
+          onChangeText = {setPhone}
+        />
            
         </View>
         
-
+        <Button
+                  title={'submit'}
+                        />
     </View>
-   
+    {/* <View style={styles.view}>
+      <Text>email</Text>
+      <TextInput
+          style={styles.input}
+       
+        />
+    </View>
+    <View style={styles.view}>
+      <Text>Test</Text>
+      <TextInput
+          style={styles.input}
+       
+        />
+    </View>
+    <View style={styles.view}>
+      <Text>Test</Text>
+      <TextInput
+          style={styles.input}
+       
+        />
+    </View> */}
       </SafeAreaView>
     );
 }

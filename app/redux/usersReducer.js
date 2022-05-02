@@ -3,7 +3,8 @@ import { combineReducers } from 'redux';
 import get from 'lodash.get'
 
 const INITIAL_STATE = {
-    user:null
+    user:null,
+    userid:null
 };
 
 const usersReducer = (state = INITIAL_STATE, action) => {
@@ -13,6 +14,8 @@ const usersReducer = (state = INITIAL_STATE, action) => {
           // We do not want to alter state directly in case
           // another action is altering it at the same time
           return {...state, user: action.payload}
+        case 'SET_USER_ID':
+          return {...state, userid: action.payload}
     default:
       return state
   }

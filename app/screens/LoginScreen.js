@@ -27,7 +27,7 @@ function LoginScreen({navigation,props}) {
     
     const dispatch = useDispatch();
 
-    const SignIn = async() => {
+    const SignIn = async(e) => {
         let user;
         
         try{
@@ -41,6 +41,7 @@ function LoginScreen({navigation,props}) {
             return false;
         };
         console.log(user);
+        console.log("userxxxx",user.user);
         console.log('useremail', user.user.email);
         setUser(user.user.email);
      
@@ -87,7 +88,9 @@ function LoginScreen({navigation,props}) {
         
         
         <AppButton title ="Login"
-         onPress={async() => {  const res = await SignIn();
+         onPress={async() => {
+           
+        const res = await SignIn();
 
         if (res == true)
         {

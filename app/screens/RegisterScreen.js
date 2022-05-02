@@ -45,7 +45,7 @@ function RegisterScreen({navigation}) {
         }
         // setPopUpText("Register Successful. Please go back to Login page.");
         // setPopUpVisible(true);
-    
+            
    
             try {
                 let docRef;
@@ -66,7 +66,16 @@ function RegisterScreen({navigation}) {
                     uid: user.uid,
                     friendList: [],
                     friendRequests: [],
-                    pushToken: [expoPushToken.data]
+                    geoLocation:
+                    {
+                    latitude: 15.616701789744717,
+                    longitude:  -100.338583,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,}
+                    ,
+                    pushToken: [expoPushToken.data],
+                    avatarUrl: 'https://firebasestorage.googleapis.com/v0/b/curastone-74faf.appspot.com/o/blank-profile-picture-gc3270b627_1280.png?alt=media&token=c2312d65-9995-454b-a7ca-caa0f3051f14',
+                    phoneNumber: phoneNumber,
                 });
             }
                 console.log("Document written with ID: ", docRef.id);
