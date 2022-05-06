@@ -92,10 +92,12 @@ function FriendList({navigation}, props) {
 
       const username = doc.data().username;
       const pushToken = doc.data().pushToken;
+      const email = doc.data().email;
       
       friends.push({
         username,
-        pushToken
+        pushToken,
+        email
       })
     })
     setFriendList(friends);
@@ -111,28 +113,30 @@ function FriendList({navigation}, props) {
   ,[props])
 
   const handleAddition = async(data) => {
+    // data is email
     const newList = friendRequest.filter(f => f !== data);
     const newFriendList = [...friendList];
     setFriendRequest(newList);
 
-    newFriendList.push({data})
-    setFriendList(newFriendList);
-    
-   
-    const docRef = doc(db, "users", userId)
-    await updateDoc(docRef,{
-      friendRequests: newList,
-      friendList: arrayUnion({data})
-    })
 
     // sync friendlist for the pp who initiate the request
     const snapshotOrigin = query(userRef,where('username', '==', data));
     const userDocOrigin=await getDocs(snapshotOrigin);
     let idOrigin;
+  
     userDocOrigin.forEach((doc) => {
         
       res=doc.data();
       idOrigin = doc.id
+      const username = doc.data().username;
+      const pushToken = doc.data().pushToken;
+      const email = doc.data().email;
+
+      newFriendList.push({
+        username,
+        pushToken,
+        email
+      })
 
     });
       
@@ -141,26 +145,41 @@ function FriendList({navigation}, props) {
           friendList: arrayUnion(profileUser)
       })
     
-  }
-
-  const handleDeletion = async(data) => {
-  
-    const newList = friendRequest.filter(f => f.username !== data);
-    const newFriendList = friendList.filter(f => f.username !== data);
-    setFriendRequest(newList);
+    
     setFriendList(newFriendList);
+    console.log("Test newFriendList:", newFriendList);
+    
     const docRef = doc(db, "users", userId)
-    try{
     await updateDoc(docRef,{
       friendRequests: newList,
-      friendList: arrayRemove({data})
-    })}catch(err){
-      console.log(err);
-    }
-    console.log(newFriendList);
+      friendList: arrayUnion(data)
+    })
+  }
+
+  const handlePopupDeletion = async(data) => {
+    // Delete element and update inside the popup
+    const newList = friendRequest.filter(f => f !== data);
+    setFriendRequest(newList);
+
+    const docRef = doc(db, "users", userId);
+    await updateDoc(docRef,{
+      friendRequests: arrayRemove(data)
+    })
     
   }
 
+  const handleDeletion = async(data) => {
+    const newFriendList = friendList.filter(f => f.email !== data);
+    setFriendList(newFriendList);
+    const docRef = doc(db, "users", userId)
+    await updateDoc(docRef,{
+      friendList: arrayRemove(data)
+    })
+    
+  }
+  //friendList.map((l, i) => {
+  //console.log("friendList test:", friendList)
+  //})
  
   return(
 
@@ -173,19 +192,19 @@ function FriendList({navigation}, props) {
     <SafeAreaView style={styles.container}>
       
       <View>
-        <View style={{left:340, top:40, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handleDeletion} /></View>
+        <View style={{left:340, top:40, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handlePopupDeletion} /></View>
         <ScrollView style={{top:100, width:360, height:520}}>
           {
             friendList.map((l, i) =>       
-              (<ListItem
+              (
+              console.log("Friendlist Map test:", l),
+              <ListItem
                 key={i}
                 title={l.username}
-                name={l.name}
+                email={l.email}
                 onDelete={handleDeletion}
                 image = {require("../assets/ahmed.jpg")}
                 style={styles.ListItem}
-
-                
                 
               />)
             )
@@ -193,10 +212,6 @@ function FriendList({navigation}, props) {
           }
         </ScrollView>
 
-        {/* <Button
-          title="Add Friend"
-          onPress={() => navigation.navigate("AddFriend")}
-        /> */}
       </View>
 
     </SafeAreaView>
