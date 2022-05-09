@@ -4,7 +4,7 @@ import AppTextInput from '../components/AppTextInput';
 import { useSelector } from 'react-redux';
 import {getUser} from '../redux/usersReducer';
 import { Avatar } from 'react-native-elements';
-import { Icon } from '@rneui/themed';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { ref, uploadBytes, getStorage,getDownloadURL } from "firebase/storage";
 import { addDoc, query, collection, where, getDocs, orderBy, startAt, endAt, doc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
@@ -20,7 +20,7 @@ function ProfileScreen(props) {
     const [birthday, setBirthday] = useState();
     
     const [files, setFiles] = useState([]);
-    const [avatarImage, setImage] = useState();
+    const [avatarImage, setImage] = useState('http://spectrasports.in/uploads/default-image.jpg');
     const [uploading, setUploading] = useState(false);
     const [userId, setUserId] = useState();
     const metadata = {
@@ -100,14 +100,10 @@ function ProfileScreen(props) {
               setUploading(true);
         
               if (!result.cancelled) {
-                const uploadUrl = await uploadImageAsync(result.uri);
-                console.log('upload url', uploadUrl);
-                setImage(uploadUrl);
-                   
-                // const docRef = doc(db, "users", userId)
-                // await updateDoc(docRef,{
-                //   avatarUrl: uploadUrl,
-                // })
+                setImage(result.uri)
+                // const uploadUrl = await uploadImageAsync(result.uri);
+                // console.log('upload url', uploadUrl);
+                // setImage(uploadUrl);
               }
             } catch (e) {
               console.log(e);
@@ -137,7 +133,7 @@ function ProfileScreen(props) {
         xhr.send(null);
       });
     
-      const imagesRef = ref(storage, 'images');
+      const imagesRef = ref(storage, 'imagess');
   
       try{
           uploadBytes(imagesRef , blob).then((snapshot) => {
@@ -158,42 +154,35 @@ function ProfileScreen(props) {
     return (
       <ImageBackground 
                    
-      source = {require("../assets/wiguna.jpg")}
+   
       style = {styles.background}
 >
-  
-<View style={{alignItems: 'center'}}>
+<View style={{alignItems: 'center', marginTop: 75}}>
         <Avatar
             rounded
             source={{uri:avatarImage,}}
             size="xlarge"
             >
-                <Avatar.Accessory onPress={onPress}/>
+                <Avatar.Accessory onPress={onPress} size={20}>  
+                  </ Avatar.Accessory>
             </Avatar>
-            <Text>Change Profile Picture</Text>
+            <Text fontSize={40}>Change Profile Picture</Text>
             </View>
-
     <View style={styles.view}>
       <View >
-      
       </View>
       <View style={styles.textBox}>  
-      <Text style={{flexGrow: 1}}>User Name</Text>
-      <Text style={{flexGrow: 1}}>{username} </Text>
-           
+      <Text style={styles.Text}>User Name</Text>
+      <Text style={styles.Text}>{username} </Text>   
         </View>
         <View style={styles.textBox}>  
-      <Text style={{flexGrow: 1}}>Your Email</Text>
-     <Text style={{flexGrow: 1}}>{emailUser} </Text>
-           
+      <Text style={styles.Text}>Your Email</Text>
+     <Text style={styles.Text}>{emailUser} </Text>
         </View>
         <View style={styles.textBox}>  
-      <Text style={{flexGrow: 1}}>Phone</Text>
-      <Text style={{flexGrow: 1}}>{phone} </Text>
-           
+      <Text style={styles.Text}>Phone</Text>
+      <Text style={styles.Text}>{phone} </Text>
         </View>
-        
-
     </View>
       </ImageBackground>
     );
@@ -207,7 +196,9 @@ const styles = StyleSheet.create({
       alignItems: "center"
     },
     textBox:{
-      flexDirection:'row',backgroundColor:'white',opacity:0.5
+      flexDirection:'row',
+      fontSize:100,
+      marginTop: 40
     },
     buttonContainer: {
         flexDirection: "row",
@@ -244,6 +235,10 @@ const styles = StyleSheet.create({
       backgroundColor:"transparent",
       alignItems: "center"
      },
+     Text:{
+      flexGrow: 1,
+      fontSize:25
+     }
     //  TextInput:{
     //   height: 40,
     //   margin: 20,

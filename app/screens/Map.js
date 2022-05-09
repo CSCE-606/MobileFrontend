@@ -15,8 +15,8 @@ const Map = () => {
   const locationSet = []
   const userRef = collection(db,'users');
   const [userId, setUserId] = useState();
-  const [location, setLocation] = useState( {latitude: 30.616701789744717,
-    longitude:  -96.338583,
+  const [location, setLocation] = useState( {latitude: 30.6191199087846,
+    longitude: -96.33873561578646,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,});
   const [errorMsg, setErrorMsg] = useState(null);
@@ -142,9 +142,9 @@ const Map = () => {
 
           />
         </Marker>
-
-        <Marker coordinate={{latitude: 47.641496889715135,
-    longitude: -122.35786350809813,
+    
+        <Marker coordinate={{latitude: 30.6191199087846,
+    longitude: -96.33873561578646,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,}} title={'Logan Location'} >
           < Image
@@ -155,8 +155,8 @@ const Map = () => {
           />
         </Marker>
 
-        <Marker coordinate={{latitude: 30.616098997756332,
-    longitude:  -96.33850557621055,
+        <Marker coordinate={{latitude: 30.6191199087846,
+    longitude: -96.33873561578646,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,}} title={'Yukon Location'} >
           < Image
@@ -167,8 +167,8 @@ const Map = () => {
           />
         </Marker>
 
-        <Marker coordinate={{latitude: 30.610815227701885,
-    longitude:  -96.31721681578658,
+        <Marker coordinate={{latitude: 30.6191199087846,
+    longitude: -96.33873561578646,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,}} title={'User Location'} >
           < Image
@@ -178,8 +178,8 @@ const Map = () => {
 
           />
         </Marker>
-        <Marker coordinate={{latitude: 30.621298734682835,
-    longitude:  -96.34037747345774,
+        <Marker coordinate={{latitude: 30.6191199087846,
+    longitude: -96.33873561578646,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,}} title={'User Location'} >
           < Image

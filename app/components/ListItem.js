@@ -22,8 +22,8 @@ function ListItem({ title, image,  onDelete, pushToken, name }) {
               to: token,
               data: { extraData: "Some data in the push notification" , "_displayInForeground":true, 
             "shouldSetBadge":false, "shouldShowAlert": true},
-              title: "Nihao!",
-              body: "Nihao!",
+              title: "Help!",
+              body: "Help!",
             }),
           });
             });

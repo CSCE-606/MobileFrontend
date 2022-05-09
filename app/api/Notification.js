@@ -50,9 +50,9 @@ export default function App() {
       },
       body: JSON.stringify({
         to: "ExponentPushToken[__teLJOMqatQdNw2myYn1r]",
-        data: { extraData: "Some data in the push notification" , "_displayInForeground":true},
-        title: "ni hao",
-        body: "Howdy",
+        data: { extraData: "Some data in the push notification" , "_displayInForeground":true,'shouldShowAlert':true},
+        title: "Help",
+        body: "Help",
       }),
     });
   
