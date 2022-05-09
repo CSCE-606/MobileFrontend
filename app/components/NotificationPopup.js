@@ -18,12 +18,13 @@ function NotificationPopup (props) {
                 <Badge value={props.friendQueue.length} status="error" containerStyle={{position: 'absolute', top: -30, left: 10}}/>
             </View>
             <ScrollView>
+                
                 <Modal transparent={true} visible={show}>
                     <View style={{backgroundColor: '#000000aa', flex: 1}}>
                         <View style={{backgroundColor: '#ffffff', top: 100, left: 40, margin: 50, padding: 40, borderRadius: 10}}>
                             <Icon name='close' color="red" onPress={() => { setShow(false) }} size={20} style={{top: -30, left: 200}} />
-                            {props.friendQueue.map((data, id) => {
-                                return <NotificationComponent {...props} key={id} data={data} />
+                            {props.friendQueue.map((l, i) => {
+                                return <NotificationComponent {...props} key={i} data={l} />
                             })}
                         </View>
                     </View>

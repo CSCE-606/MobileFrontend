@@ -19,10 +19,10 @@ function AddFriend() {
     const [displayFriendList, updateDisplay] = useState(false);
     const profileUser = useSelector(getUser);
     const userRef = collection(db,'users');
-
+  
     const searchUser = async () => {
       const q1 = query(userRef, orderBy('username'), startAt(username), endAt(username+"\uf8ff"));
-
+      console.log("Waht is profileUser in AddFriend?", profileUser)
       const PotentialFriends= await getDocs(q1);
       let tempPotentialFriendList= [];
       
@@ -35,7 +35,7 @@ function AddFriend() {
       setPotentialFriendList(tempPotentialFriendList);
       updateDisplay(true);
     };
-    console.log("test potential friend lis --->", PotentialFriendList)
+    //console.log("test potential friend lis --->", PotentialFriendList)
     return(
 
       <ImageBackground 
@@ -58,6 +58,7 @@ function AddFriend() {
         placeholder="username"
       />
     <ScrollView>
+
       {displayFriendList ? 
         PotentialFriendList.map((l, i) => 
         (<AddFriendItem
