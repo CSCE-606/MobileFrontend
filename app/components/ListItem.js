@@ -47,14 +47,14 @@ function ListItem({ title, image, email, onDelete }) {
           style={{left:300}}
 
         ></Switch>
-        {console.log("username",title)}
+      
         <Image style={styles.image} source={image} />
         <AppText style={styles.title}>{title}</AppText>
        
       </View>
 
       <Icon name='bell' size={20} color="blue" onPress={sendPushToken} style={{left:300, top:-70}}/>    
-      <Button title={'Delete'} onPress={() => onDelete(email)}></Button>
+      <Button title={'Delete'} onPress={() => onDelete(title)}></Button>
       
     </View>
 

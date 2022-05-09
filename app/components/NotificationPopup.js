@@ -9,7 +9,6 @@ import { Badge } from 'react-native-elements';
 
 function NotificationPopup (props) {
     const [show, setShow] = useState(false);
-    console.log("NotificationPopup props test:", props)
     return(
         <View>
             <TouchableOpacity>

@@ -12,78 +12,42 @@ function AddFriendItem({ title, image,username }) {
     const profileUser = useSelector(getUser);
 
     const userRef = collection(db,'users');
-    
+
 
     const showUsername = async() =>{
-        //console.log("getuser:", getUser)
-        // read profileUser Docs and update profileUser friendRequests
       
         var friendRequest=[]
         var newFriendRequest=[]
         friendRequest.push(username)
+
         const snapshot = query(userRef,where('username', '==', username));
         const userDoc=await getDocs(snapshot);
         let id;
         let res;
+        let uName;
         
+        const meSnapShot = query(userRef, where('email', '==', profileUser));
+        const meDoc = await getDocs(meSnapShot);
+        let meName;
 
-        userDoc.forEach((doc) => {
+        meDoc.forEach((doc) => {
+            meName = doc.data().username;
+        })
+
+        userDoc.forEach((doc) => {    
+            res=doc.data();
+            id = doc.id
+            uName = res.username;
         
-        res=doc.data();
-        id = doc.id
-
-       
-        newFriendRequest=friendRequest.concat(profileUser);
-
-       // console.log('tmd',newFriendRequest)
-
-          });
-
-        //  console.log("TEST friendRequest --->", newFriendRequest)
+            newFriendRequest=friendRequest.concat(meName);
         
-        
+        });
+
         const docRef = doc(db, "users", id);
-        await updateDoc(docRef,{
-            friendRequests: arrayUnion(profileUser)
-          })
+            await updateDoc(docRef,{
+                friendRequests: arrayUnion(meName)
+            })
         
-        // const docSnap = await getDoc(docRef);
-        //   if (docSnap.exists()) {
-            
-        //     const user = docSnap.data();
-            
-        //     console.log('tnnd',user.friendRequests);
-        //   } else {
-        //     console.log("No such document!");
-        //   }
-
-        
-        // console.log('tnnd',Res.friendRequests)
-        
-        
-        // const doc = await cityRef.get();
-        // console.log(userRef)
-
-
-
-
-        // let updateFriendRequestQ = query(userRef, )
-        // try {
-        //     let docRef;
-        //     if (user){
-        //         docRef = await addDoc(collection(db, "users"), {
-        //         email: user.email,
-        //         username: user.email,
-        //         uid: user.uid,
-        //         friendList: [],
-        //         friendRequests: [],
-        //         pushToken: [expoPushToken.data]
-        //     });
-        // }
-        //     console.log("Document written with ID: ", docRef.id);
-        // } catch (e) {
-        //     console.error("Error adding document: ", e);
-        // }
     }
 
 

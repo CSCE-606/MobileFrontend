@@ -36,29 +36,43 @@ function FriendList({navigation}, props) {
 
   const profileUser = useSelector(getUser);   // popup123@gmail.com
   
-  const q = query(collection(db, "users"), where("email", "==", profileUser));
- 
-  const onChangeDB = onSnapshot(q, (snapshot) => {
-    snapshot.docChanges().forEach((change) => {
-      if (change.type === "added") {
-        //console.log("New city: ", "sucss");
-        
-      }
-      if (change.type === "modified") {
-         // console.log("Modified city: ", change.doc.data().friendList);
-          setFriendList(change.doc.data().friendList)
-          setFriendRequest(change.doc.data().friendRequests)
-          
-      }
-      // if (change.type === "removed") {
-      //     console.log("Removed city: ", change.doc.data());
-      // }
-      
-    });
-  });
-  // ---end---
 
  
+  const onChangeDB = () =>{
+    const q = query(userRef, where("email", "==", profileUser));
+    onSnapshot(q, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if(change) {
+        setFriendRequest(change.doc.data().friendRequests)
+        const listFriend = async() => {
+          // The following is to put friendList to render
+          let friend = [];
+          let friendQuery = query(userRef, where("username", "in", change.doc.data().friendList));
+          let friendSnapShot = await getDocs(friendQuery);
+          friendSnapShot.forEach((doc) => {
+
+            const username = doc.data().username;
+            const pushToken = doc.data().pushToken;
+            const email = doc.data().email;
+            
+            friend.push({
+              username,
+              pushToken,
+              email
+            })
+          })
+          setFriendList(friend);
+
+        }
+        listFriend();
+      }
+      
+    });
+
+  });
+}
+  // ---end---
+
 
   const listFriend = async() => {
     const userQ = query(userRef, where("email","==",profileUser)); 
@@ -66,7 +80,7 @@ function FriendList({navigation}, props) {
 
     let friendLists = [];
     let friendRequests = [];
-  
+
     querySnapShot.forEach((doc) => {
       friendLists = doc.data().friendList;
       friendRequests = doc.data().friendRequests;
@@ -74,10 +88,8 @@ function FriendList({navigation}, props) {
       setUserId(doc.id);
     })
     
-    setFriendRequest(friendRequests);
-    
-    //console.log('friendlist', friendLists);
-    const pushTokenQ = query(userRef, where("email","in",friendLists));
+    // in order to set friendList, we need to have username, pushToken, and email
+    const pushTokenQ = query(userRef, where("username","in",friendLists));
     let tokenSnapShot;
     try{
       tokenSnapShot  = await getDocs(pushTokenQ);
@@ -86,7 +98,6 @@ function FriendList({navigation}, props) {
       cosnole.log(err);
     }
 
-    //console.log(pushTokenQ, "this is pushTokenQ")
     const friends = []
     tokenSnapShot.forEach((doc) => {
 
@@ -100,38 +111,40 @@ function FriendList({navigation}, props) {
         email
       })
     })
+
     setFriendList(friends);
+
   };
 
   useEffect(() => 
   {
     // console.log("testz");
     listFriend();
-    console.log('frinedz list', friendList);
     onChangeDB();
+
   }
   ,[props])
-
-  const handleAddition = async(data) => {
-    // data is email
-    const newList = friendRequest.filter(f => f !== data);
-    const newFriendList = [...friendList];
-    setFriendRequest(newList);
-
-
-    // sync friendlist for the pp who initiate the request
-    const snapshotOrigin = query(userRef,where('username', '==', data));
-    const userDocOrigin=await getDocs(snapshotOrigin);
-    let idOrigin;
   
-    userDocOrigin.forEach((doc) => {
-        
-      res=doc.data();
-      idOrigin = doc.id
+  const handleAddition = async(data) => {
+    // deal with friendRequest list
+    const newList = friendRequest.filter(f => f !== data);
+    //setFriendRequest(newList);
+
+    
+    // deal with friendlist for both side user
+    const newFriendList = [...friendList];
+    
+    const snapshotOther = query(userRef,where('username', '==', data));
+    const userDocOther= await getDocs(snapshotOther);
+    let idOther;
+
+    userDocOther.forEach((doc) => {
+      idOther = doc.id
+ 
       const username = doc.data().username;
       const pushToken = doc.data().pushToken;
       const email = doc.data().email;
-
+  
       newFriendList.push({
         username,
         pushToken,
@@ -139,76 +152,83 @@ function FriendList({navigation}, props) {
       })
 
     });
-      
-    const docRefOrigin = doc(db, "users", idOrigin);
-      await updateDoc(docRefOrigin,{
-          friendList: arrayUnion(profileUser)
-      })
     
     
-    setFriendList(newFriendList);
-    console.log("Test newFriendList:", newFriendList);
+    
+    
+    //setFriendList(newFriendList);
+   
     
     const docRef = doc(db, "users", userId)
     await updateDoc(docRef,{
       friendRequests: newList,
       friendList: arrayUnion(data)
     })
+
+    const snapshot = query(userRef,where('email', '==', profileUser));
+    const userDoc= await getDocs(snapshot);
+    let nameUser;
+
+    userDoc.forEach((doc) => { nameUser = doc.data().username; });
+
+    // Wait until end to update other file
+    const docRefOther = doc(db, "users", idOther);
+      await updateDoc(docRefOther,{
+          friendList: arrayUnion(nameUser)
+      })
+      console.log("What is data?", data)
+      console.log("What is nameUser?", nameUser)
   }
 
   const handlePopupDeletion = async(data) => {
     // Delete element and update inside the popup
     const newList = friendRequest.filter(f => f !== data);
-    setFriendRequest(newList);
+   // setFriendRequest(newList);
 
     const docRef = doc(db, "users", userId);
-    await updateDoc(docRef,{
-      friendRequests: arrayRemove(data)
-    })
+      await updateDoc(docRef,{
+        friendRequests: newList
+      })
     
   }
 
   const handleDeletion = async(data) => {
-    const newFriendList = friendList.filter(f => f.email !== data);
+    const newFriendList = friendList.filter(f => f.username !== data);
     setFriendList(newFriendList);
     const docRef = doc(db, "users", userId)
-    await updateDoc(docRef,{
-      friendList: arrayRemove(data)
-    })
+      await updateDoc(docRef,{
+        friendList: arrayRemove(data)
+      })
     
   }
-  //friendList.map((l, i) => {
-  //console.log("friendList test:", friendList)
-  //})
  
   return(
 
-    <ImageBackground 
-                   
-    source = {require("../assets/wiguna.jpg")}
-    style = {styles.background}
->
-    
+    <ImageBackground      
+      source = {require("../assets/wiguna.jpg")}
+      style = {styles.background}
+    >
+
     <SafeAreaView style={styles.container}>
-      
+    
       <View>
         <View style={{left:340, top:40, position:'absolute' }}><NotificationPopup friendQueue={friendRequest} onAdd={handleAddition} onDelete={handlePopupDeletion} /></View>
         <ScrollView style={{top:100, width:360, height:520}}>
+     
           {
             friendList.map((l, i) =>       
               (
-              console.log("Friendlist Map test:", l),
-              <ListItem
-                key={i}
-                title={l.username}
-                email={l.email}
-                onDelete={handleDeletion}
-                image = {require("../assets/ahmed.jpg")}
-                style={styles.ListItem}
-                
-              />)
-            )
-            
+                <ListItem
+                  key={i}
+                  title={l.username}
+                  email={l.email}
+                  onDelete={handleDeletion}
+                  image = {require("../assets/ahmed.jpg")}
+                  style={styles.ListItem}
+                  
+                />
+              )
+            )           
           }
         </ScrollView>
 
