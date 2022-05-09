@@ -18,7 +18,7 @@ function NotificationPopup (props) {
                 <Badge value={props.friendQueue.length} status="error" containerStyle={{position: 'absolute', top: -30, left: 10}}/>
             </View>
             <ScrollView>
-                <Text>Hello</Text>
+                
                 <Modal transparent={true} visible={show}>
                     <View style={{backgroundColor: '#000000aa', flex: 1}}>
                         <View style={{backgroundColor: '#ffffff', top: 100, left: 40, margin: 50, padding: 40, borderRadius: 10}}>
